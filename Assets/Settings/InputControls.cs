@@ -73,6 +73,14 @@ public class @InputControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Shift"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0865f69-d285-4a0b-93fe-726f3b05c5f0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -218,6 +226,17 @@ public class @InputControls : IInputActionCollection, IDisposable
                     ""action"": ""CamerMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e05c172-6c60-4577-90cc-822ff44a4e4f"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -233,6 +252,7 @@ public class @InputControls : IInputActionCollection, IDisposable
         m_Default_Esc = m_Default.FindAction("Esc", throwIfNotFound: true);
         m_Default_MousePosition = m_Default.FindAction("MousePosition", throwIfNotFound: true);
         m_Default_CamerMove = m_Default.FindAction("CamerMove", throwIfNotFound: true);
+        m_Default_Shift = m_Default.FindAction("Shift", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -289,6 +309,7 @@ public class @InputControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Default_Esc;
     private readonly InputAction m_Default_MousePosition;
     private readonly InputAction m_Default_CamerMove;
+    private readonly InputAction m_Default_Shift;
     public struct DefaultActions
     {
         private @InputControls m_Wrapper;
@@ -300,6 +321,7 @@ public class @InputControls : IInputActionCollection, IDisposable
         public InputAction @Esc => m_Wrapper.m_Default_Esc;
         public InputAction @MousePosition => m_Wrapper.m_Default_MousePosition;
         public InputAction @CamerMove => m_Wrapper.m_Default_CamerMove;
+        public InputAction @Shift => m_Wrapper.m_Default_Shift;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -330,6 +352,9 @@ public class @InputControls : IInputActionCollection, IDisposable
                 @CamerMove.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnCamerMove;
                 @CamerMove.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnCamerMove;
                 @CamerMove.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnCamerMove;
+                @Shift.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShift;
+                @Shift.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShift;
+                @Shift.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShift;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -355,6 +380,9 @@ public class @InputControls : IInputActionCollection, IDisposable
                 @CamerMove.started += instance.OnCamerMove;
                 @CamerMove.performed += instance.OnCamerMove;
                 @CamerMove.canceled += instance.OnCamerMove;
+                @Shift.started += instance.OnShift;
+                @Shift.performed += instance.OnShift;
+                @Shift.canceled += instance.OnShift;
             }
         }
     }
@@ -368,5 +396,6 @@ public class @InputControls : IInputActionCollection, IDisposable
         void OnEsc(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
         void OnCamerMove(InputAction.CallbackContext context);
+        void OnShift(InputAction.CallbackContext context);
     }
 }

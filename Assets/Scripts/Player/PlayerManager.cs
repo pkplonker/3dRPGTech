@@ -41,6 +41,7 @@ namespace Player
 
 				Defocus();
 				locomotion.Move(hit.point);
+				locomotion.SetRun(inputHandler.Shift);
 			}
 		}
 

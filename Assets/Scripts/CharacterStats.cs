@@ -12,12 +12,16 @@ public class CharacterStats : MonoBehaviour
     public float currentHealth { get; protected set; }= 0;
     public float maxHealth { get; protected set; }= 99;
     public event Action<float> OnHealthChanged;
+ 
+
     public event Action OnDeath;
+
 
     protected virtual void Start()
     {
         currentHealth = maxHealth;
         OnHealthChanged?.Invoke(currentHealth);
+       
     }
     public virtual void TakeDamage(float amount)
     {
@@ -55,4 +59,6 @@ public class CharacterStats : MonoBehaviour
         CanMove = true;
         OnHealthChanged?.Invoke(currentHealth);
     }
+
+  
 }

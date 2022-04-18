@@ -13,6 +13,8 @@ namespace Player
         public bool RightClick{ get; private set; }
         public bool MiddleClick{ get; private set; }
         public bool Esc{ get; private set; }
+        public bool Shift{ get; private set; }
+
         public Vector2 MousePosition{ get; private set; }
         private void OnEnable()
         {
@@ -29,7 +31,8 @@ namespace Player
            inputControls.Default.MiddleClick.started += inputActions => MiddleClick = true;
            inputControls.Default.MiddleClick.canceled += inputActions => MiddleClick = false;
            inputControls.Default.Esc.performed += inputActions => Esc = true;
-
+           inputControls.Default.Shift.started += inputActions => Shift = true;
+           inputControls.Default.Shift.canceled += inputActions => Shift = false;
         }
         private void OnDisable()
         {
