@@ -23,6 +23,8 @@ public class CameraHandler : MonoBehaviour
     private float currentZoomLevel;
     [Header("Movement")]
     private float currentYaw;
+
+    private Vector3 currentTargetPosition;
     
     private void Awake()
     {
@@ -30,25 +32,30 @@ public class CameraHandler : MonoBehaviour
         else Destroy(gameObject);
         playerCamera = GetComponentInChildren<Camera>();
         if(!playerCamera) Debug.LogWarning("No camera");
-        inputHandler = PlayerManager.Instance.GetComponent<InputHandler>();
-        if(!inputHandler) Debug.LogWarning("No input handler");
+        currentZoomLevel = cameraZoomMax - cameraZoomMin / 2;
 
+    }
+
+    public void Init(PlayerManager playerManager)
+    {
+        if(playerManager==null) Debug.LogError("Player manager cannot be null");
+        inputHandler = playerManager.GetComponent<InputHandler>();
+        if(!inputHandler) Debug.LogWarning("No input handler");
     }
 
     private void Update()
     {
-        ChangeScroll(inputHandler.mouseScrollVector);
+        ChangeScroll(inputHandler.MouseScrollVector);
         HandleCameraPan();
     }
 
     private void HandleCameraPan()
     {
-        if (inputHandler.middleClick)
+        if (inputHandler.MiddleClick)
         {
-            currentYaw -= inputHandler.cameraMove * playerCustomSettings.cameraRotationSpeed * Time.deltaTime;
+            currentYaw -= inputHandler.CameraMove * playerCustomSettings.cameraRotationSpeed * Time.deltaTime;
         }
     }
-
 
     private void ChangeScroll(float value)
     {
@@ -58,14 +65,13 @@ public class CameraHandler : MonoBehaviour
         if (currentZoomLevel < cameraZoomMin) currentZoomLevel = cameraZoomMin;
     }
 
-
-   
-
+    
     private void LateUpdate()
     {
-        transform.position = target.position - cameraOffset * currentZoomLevel ;
-        transform.LookAt(target.position+ Vector3.up*pitch);
-        transform.RotateAround(target.position, Vector3.up, currentYaw);
+        currentTargetPosition = target.position;
+        transform.position = currentTargetPosition - cameraOffset * currentZoomLevel ;
+        transform.LookAt(currentTargetPosition+ Vector3.up*pitch);
+        transform.RotateAround(currentTargetPosition, Vector3.up, currentYaw);
 
     }
 }

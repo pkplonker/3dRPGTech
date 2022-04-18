@@ -6,30 +6,29 @@ namespace Player
     public class InputHandler : MonoBehaviour
     {
         private InputControls inputControls;
-        public float mouseScrollVector { get; private set; }
-        public float cameraMove { get; private set; }
+        public float MouseScrollVector { get; private set; }
+        public float CameraMove { get; private set; }
 
-        public bool leftClick { get; private set; }
-        public bool rightClick{ get; private set; }
-        public bool middleClick{ get; private set; }
-        public bool esc{ get; private set; }
-        public Vector2 mousePosition{ get; private set; }
+        public bool LeftClick { get; private set; }
+        public bool RightClick{ get; private set; }
+        public bool MiddleClick{ get; private set; }
+        public bool Esc{ get; private set; }
+        public Vector2 MousePosition{ get; private set; }
         private void OnEnable()
         {
             inputControls = new InputControls();
            inputControls.Enable();
            inputControls.Default.MiddleScroll.performed +=
-               inputActions => mouseScrollVector = inputActions.ReadValue<float>();
+               inputActions => MouseScrollVector = inputActions.ReadValue<float>();
            inputControls.Default.CamerMove.performed +=
-               inputActions =>  cameraMove= inputActions.ReadValue<float>();
+               inputActions =>  CameraMove= inputActions.ReadValue<float>();
            inputControls.Default.MousePosition.performed +=
-               inputActions => mousePosition = inputActions.ReadValue<Vector2>();
-           inputControls.Default.LeftClick.performed += inputActions => leftClick = true;
-           inputControls.Default.RightClick.performed += inputActions => rightClick = true;
-           inputControls.Default.MiddleClick.started += inputActions => middleClick = true;
-           inputControls.Default.MiddleClick.canceled += inputActions => middleClick = false;
-
-           inputControls.Default.Esc.performed += inputActions => esc = true;
+               inputActions => MousePosition = inputActions.ReadValue<Vector2>();
+           inputControls.Default.LeftClick.performed += inputActions => LeftClick = true;
+           inputControls.Default.RightClick.performed += inputActions => RightClick = true;
+           inputControls.Default.MiddleClick.started += inputActions => MiddleClick = true;
+           inputControls.Default.MiddleClick.canceled += inputActions => MiddleClick = false;
+           inputControls.Default.Esc.performed += inputActions => Esc = true;
 
         }
         private void OnDisable()
@@ -46,8 +45,8 @@ namespace Player
 
         private void ResetInputs()
         {
-            leftClick = false;
-            rightClick = false;
+            LeftClick = false;
+            RightClick = false;
         }
     }
 }
