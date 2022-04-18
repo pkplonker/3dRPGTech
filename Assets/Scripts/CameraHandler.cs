@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Player;
+using SO;
 using UnityEngine;
 
 public class CameraHandler : MonoBehaviour
@@ -13,16 +14,14 @@ public class CameraHandler : MonoBehaviour
     [Header("General")]
     [SerializeField] private Transform target;
     [SerializeField] private float pitch;
-    
+    [SerializeField] private PlayerCustomSettings playerCustomSettings;    
     [Header("Zoom")]
     [SerializeField] private Vector3 cameraOffset;
     [SerializeField] private float cameraZoomMin;
     [SerializeField] private float cameraZoomMax;
-    [SerializeField] private float zoomSpeed;
 
     private float currentZoomLevel;
     [Header("Movement")]
-    [SerializeField] private float yawSpeed;
     private float currentYaw;
     
     private void Awake()
@@ -46,15 +45,15 @@ public class CameraHandler : MonoBehaviour
     {
         if (inputHandler.middleClick)
         {
-            currentYaw -= inputHandler.cameraMove * yawSpeed * Time.deltaTime;
+            currentYaw -= inputHandler.cameraMove * playerCustomSettings.cameraRotationSpeed * Time.deltaTime;
         }
     }
 
 
     private void ChangeScroll(float value)
     {
-        if (value>0) currentZoomLevel--;
-        else if (value<0)currentZoomLevel++;
+        if (value > 0) currentZoomLevel -= playerCustomSettings.cameraZoomSpeed;
+        else if (value<0)currentZoomLevel+=playerCustomSettings.cameraZoomSpeed;
         if (currentZoomLevel > cameraZoomMax) currentZoomLevel = cameraZoomMax;
         if (currentZoomLevel < cameraZoomMin) currentZoomLevel = cameraZoomMin;
     }
@@ -64,7 +63,7 @@ public class CameraHandler : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.position = target.position - cameraOffset * currentZoomLevel;
+        transform.position = target.position - cameraOffset * currentZoomLevel ;
         transform.LookAt(target.position+ Vector3.up*pitch);
         transform.RotateAround(target.position, Vector3.up, currentYaw);
 
