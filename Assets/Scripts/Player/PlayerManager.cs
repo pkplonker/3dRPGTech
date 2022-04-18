@@ -12,5 +12,10 @@ namespace Player
 			if (Instance == null) Instance = this;
 			else Destroy(gameObject);
 		}
+
+		private void Update()
+		{
+			
+		}
 	}
 }

@@ -7,7 +7,7 @@ public class CharacterStats : MonoBehaviour
 {
     public string CharacterName { get; protected set; } = "NewCharacter";
     public bool IsDead { get; protected set; }
-    public bool CanMove { get; protected set; }
+    public bool CanMove { get; protected set; } = true;
 
     public float currentHealth { get; protected set; }= 0;
     public float maxHealth { get; protected set; }= 99;
