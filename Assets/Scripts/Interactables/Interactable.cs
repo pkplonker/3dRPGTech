@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 
 namespace Interactables
@@ -21,11 +22,11 @@ namespace Interactables
 			if (interactor == null|| hasInteracted) return;
 			if (Vector3.SqrMagnitude(interactionTransform.position- interactor.position)<=radiusMagnitude )
 			{
-				Interact();
+				Interact(interactor.GetComponent<Inventory>());
 			}
 		}
 
-		protected virtual void Interact()
+		protected virtual void Interact(Inventory inventory)
 		{
 			hasInteracted = true;
 			Debug.Log("has interacted");

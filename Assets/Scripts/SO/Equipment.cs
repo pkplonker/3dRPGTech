@@ -1,18 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
-public class Equipment : MonoBehaviour
+namespace SO
 {
-    // Start is called before the first frame update
-    void Start()
+    [CreateAssetMenu(fileName = "New Equipment", menuName = "SO/Items/Equipment/Equipment")]
+    public class Equipment : ItemBase
     {
-        
+        public EquipmentSlot equipmentSlot;
+        public override bool Use(Inventory inventory)
+        {
+            Equip();
+            return false;
+        }
+
+        private void Equip()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public enum EquipmentSlot
     {
+        Null,
+        Head,
+        Necklace,
+        Ring,
+        Chest,
+        Legs,
+        Feet,
+        Gloves,
+        LeftHand,
+        RightHand,
+        Cape,
+        Back
         
     }
 }

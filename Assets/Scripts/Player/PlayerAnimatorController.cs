@@ -7,7 +7,8 @@ namespace Player
     {
         private Animator animator;
         private Locomotion locomotion;
-        
+        private static readonly int Movement = Animator.StringToHash("Movement");
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -18,7 +19,7 @@ namespace Player
 
         private void Update()
         {
-            animator.SetFloat("Movement", locomotion.currentMovementSpeed);
+            animator.SetFloat(Movement, locomotion.currentMovementSpeed);
         }
     }
 }

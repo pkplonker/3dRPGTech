@@ -53,7 +53,7 @@ public class CameraHandler : MonoBehaviour
     {
         if (inputHandler.MiddleClick)
         {
-            currentYaw -= inputHandler.CameraMove * playerCustomSettings.cameraRotationSpeed * Time.deltaTime;
+            currentYaw += inputHandler.CameraMove * playerCustomSettings.cameraRotationSpeed * Time.deltaTime;
         }
     }
 
