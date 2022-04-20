@@ -1,10 +1,11 @@
 using Interactables;
+using Save;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Player
 {
-	public class Locomotion : MonoBehaviour
+	public class Locomotion : MonoBehaviour, ISaveLoadInterface
 	{
 		private CharacterStats stats;
 		public Transform currentTarget;
@@ -90,5 +91,24 @@ namespace Player
 			else runManager.StopRunning();
 			
 		}
+
+		#region SaveLoad
+		
+		public void LoadState(GameData gameData)
+		{
+			UpdateTransform(gameData);
+		}
+		
+		public void SaveState(GameData gameData)
+		{
+			//gameData.playerPosition = transform;
+		}
+		private void UpdateTransform(GameData gameData)
+		{
+		//	transform.position = gameData.playerPosition.position;
+			//transform.eulerAngles = gameData.playerPosition.eulerAngles;
+			//transform.localScale = gameData.playerPosition.localScale;
+		}
+		#endregion
 	}
 }

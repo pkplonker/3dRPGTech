@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Save;
 using SO;
 using UnityEngine;
 
 namespace Player
 {
-	public class Inventory : MonoBehaviour
+	[Serializable]
+	public class Inventory : MonoBehaviour, ISaveLoadInterface
 	{
 		private List<InventorySlot> slots;
 		[SerializeField] private int capacity;
@@ -23,23 +25,24 @@ namespace Player
 				slots.Capacity = capacity;
 			}
 
-			while (slots.Count<slots.Capacity)
+			while (slots.Count < slots.Capacity)
 			{
-				slots.Add(new InventorySlot(null,0));
+				slots.Add(new InventorySlot(null, 0));
 			}
 		}
 
 		public bool Add(ItemBase item, int quantity)
 		{
-			foreach (var t in slots.Where(t =>t.item!=null && t.item == item && t.quantity + quantity <= t.item.maxQuantity))
+			foreach (var t in slots.Where(t =>
+				t.item != null && t.item == item && t.quantity + quantity <= t.item.maxQuantity))
 			{
-				t.Add(item,quantity);
+				t.Add(item, quantity);
 				return true;
 			}
 
 			foreach (var t in slots.Where(t => t.item == null))
 			{
-				t.Add(item,quantity);
+				t.Add(item, quantity);
 				return true;
 			}
 
@@ -74,47 +77,61 @@ namespace Player
 			}
 
 			return true;
-
-		}
-	}
-
-	[Serializable]
-	public class InventorySlot
-	{
-		public ItemBase item { get; private set; }
-		public int quantity { get; private set; }
-
-		public InventorySlot(ItemBase item, int quantity)
-		{
-			this.item = item;
-			this.quantity = quantity;
 		}
 
-		public void Add(ItemBase item, int quantity)
+		#region SaveLoad
+
+		public void LoadState(GameData gameData)
 		{
-			if (item != this.item)
+			//slots = gameData.inventorySlots;
+		}
+
+		public void SaveState(GameData gameData)
+		{
+			//gameData.inventorySlots = slots;
+
+		}
+
+		#endregion
+
+		[Serializable]
+		public class InventorySlot
+		{
+			public ItemBase item { get; private set; }
+			public int quantity { get; private set; }
+
+			public InventorySlot(ItemBase item, int quantity)
 			{
+				this.item = item;
 				this.quantity = quantity;
 			}
-			else
+
+			public void Add(ItemBase item, int quantity)
 			{
-				this.quantity += quantity;
+				if (item != this.item)
+				{
+					this.quantity = quantity;
+				}
+				else
+				{
+					this.quantity += quantity;
+				}
+
+				this.item = item;
 			}
 
-			this.item = item;
-		}
-
-		public void Remove(int quantity)
-		{
-			quantity -= quantity;
-			if (quantity < 0)
+			public void Remove(int quantity)
 			{
-				Debug.LogWarning("Some how managed to remove too many");
-				item = null;
-			}
-			else if (quantity == 0)
-			{
-				item = null;
+				quantity -= quantity;
+				if (quantity < 0)
+				{
+					Debug.LogWarning("Some how managed to remove too many");
+					item = null;
+				}
+				else if (quantity == 0)
+				{
+					item = null;
+				}
 			}
 		}
 	}
