@@ -36,6 +36,7 @@ namespace Player
 			HandleRun();
 			if (currentTarget == null)
 			{
+				SetAutomaticRotation();
 				return;
 			}
 			Move(currentTarget.transform.position);
@@ -74,15 +75,25 @@ namespace Player
 			if (target == null)
 			{
 				currentTarget = null;
-				agent.stoppingDistance = 0f;
-				agent.updateRotation = true;
+				SetAutomaticRotation();
 			}
 			else
 			{
 				currentTarget = target.transform;
-				agent.updateRotation = false;
-				agent.stoppingDistance = target.GetInteractionRadius() * 0.8f;
+				SetManualRotation(target);
 			}
+		}
+
+		private void SetAutomaticRotation()
+		{
+			agent.stoppingDistance = 0f;
+			agent.updateRotation = true;
+		}
+
+		private void SetManualRotation(Interactable target)
+		{
+			agent.updateRotation = false;
+			agent.stoppingDistance = target.GetInteractionRadius() * 0.8f;
 		}
 
 		public void SetRun(bool run)
@@ -101,13 +112,13 @@ namespace Player
 		
 		public void SaveState(GameData gameData)
 		{
-			//gameData.playerPosition = transform;
+			gameData.playerPosition = new SerializableVector(transform.position);
 		}
 		private void UpdateTransform(GameData gameData)
 		{
-		//	transform.position = gameData.playerPosition.position;
-			//transform.eulerAngles = gameData.playerPosition.eulerAngles;
-			//transform.localScale = gameData.playerPosition.localScale;
+			transform.position = gameData.playerPosition.GetVector();
+		//	transform.eulerAngles = gameData.playerPosition.rotation.GetVector();;
+			//transform.localScale = gameData.playerPosition.scale.GetVector();;
 		}
 		#endregion
 	}

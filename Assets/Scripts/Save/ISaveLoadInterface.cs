@@ -9,5 +9,11 @@ namespace Save
         {
             SavingSystem.instance.Subscribe(this);
         }
+
+        public void OnDisable()
+        {
+            SavingSystem.instance.UnSubscribe(this);
+        }
+
     }
 }

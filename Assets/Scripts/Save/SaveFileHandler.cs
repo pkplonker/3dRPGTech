@@ -41,6 +41,7 @@ public class SaveFileHandler
 				throw;
 			}
 		}
+		Debug.LogWarning("Load successfully read");
 
 		return loadedData;
 	}
@@ -55,7 +56,7 @@ public class SaveFileHandler
 			using FileStream stream = new FileStream(fullPath, FileMode.Create);
 			using (StreamWriter writer = new StreamWriter(stream))
 			{
-				writer.Write(data);
+				writer.Write(dataToStore);
 			}
 		}
 		catch (Exception exception)
@@ -63,5 +64,7 @@ public class SaveFileHandler
 			Debug.LogError("Unable to save data to file " + fullPath + "\n" + exception);
 			throw;
 		}
+		Debug.LogWarning("Saved successfully");
+
 	}
 }

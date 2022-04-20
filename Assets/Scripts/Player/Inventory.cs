@@ -83,12 +83,12 @@ namespace Player
 
 		public void LoadState(GameData gameData)
 		{
-			//slots = gameData.inventorySlots;
+			slots = gameData.inventorySlots;
 		}
 
 		public void SaveState(GameData gameData)
 		{
-			//gameData.inventorySlots = slots;
+			gameData.inventorySlots = slots;
 
 		}
 

@@ -28,18 +28,19 @@ namespace Save
 
 		private void OnEnable()
 		{
-			saveableObjects = GetSaveableGameObjects();
+			saveableObjects = new List<ISaveLoadInterface>();
 		}
-
+/*
 		private static List<ISaveLoadInterface> GetSaveableGameObjects()
 		{
 			IEnumerable<ISaveLoadInterface> data = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoadInterface>();
 			return new List<ISaveLoadInterface>(data);
 		}
-
+*/
 		public void NewGame()
 		{
 			gameData = new GameData();
+			Debug.LogWarning("Created new save file");
 		}
 
 		public void SaveGame()
@@ -50,6 +51,7 @@ namespace Save
 			}
 
 			saveFileHandler.Save(gameData);
+			
 		}
 
 		public void LoadGame()
@@ -66,6 +68,8 @@ namespace Save
 			{
 				o.LoadState(gameData);
 			}
+			Debug.LogWarning("All objects loaded successfully");
+
 		}
 #if !UnityEditor
 		private void OnApplicationQuit()
@@ -73,5 +77,19 @@ namespace Save
 			SaveGame();
 		}
 #endif
+		public void Subscribe(ISaveLoadInterface saveLoadInterface)
+		{
+			if (!saveableObjects.Contains(saveLoadInterface))
+			{
+				saveableObjects.Add(saveLoadInterface);
+			}
+		}
+		public void UnSubscribe(ISaveLoadInterface saveLoadInterface)
+		{
+			if (saveableObjects.Contains(saveLoadInterface))
+			{
+				saveableObjects.Remove(saveLoadInterface);
+			}
+		}
 	}
 }

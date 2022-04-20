@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using Player;
 using UnityEngine;
-
 namespace Save
 {
-	[System.Serializable]
+	[Serializable]
 	public class GameData
 	{
 		public bool playerIsDead = false;
@@ -13,7 +12,12 @@ namespace Save
 		public float playerCurrentHealth;
 
 		public float playerMaxHealth = 100;
-		//public Transform playerPosition;
-		//public List<InventorySlot> inventorySlots;
+		public SerializableVector playerPosition;
+		public List<Inventory.InventorySlot> inventorySlots;
+
+		public GameData()
+		{
+			playerCurrentHealth = playerMaxHealth;
+		}
 	}
 }
