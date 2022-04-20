@@ -7,9 +7,9 @@ namespace Save
 
     public class SerializableVector
     {
-        private float x;
-        private float y;
-        private float z;
+        public float x;
+        public float y;
+        public float z;
 
         public SerializableVector(Vector3 v)
         {

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Player
 {
 	[Serializable]
-	public class Inventory : MonoBehaviour, ISaveLoadInterface
+	public class Inventory :  SaveableObject
 	{
 		private List<InventorySlot> slots;
 		[SerializeField] private int capacity;
@@ -81,12 +81,12 @@ namespace Player
 
 		#region SaveLoad
 
-		public void LoadState(GameData gameData)
+		public override void  LoadState(GameData gameData)
 		{
 			slots = gameData.inventorySlots;
 		}
 
-		public void SaveState(GameData gameData)
+		public override void SaveState(GameData gameData)
 		{
 			gameData.inventorySlots = slots;
 

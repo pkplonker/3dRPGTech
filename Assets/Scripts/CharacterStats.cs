@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Save;
 using UnityEngine;
 
-public class CharacterStats : MonoBehaviour, ISaveLoadInterface
+public class CharacterStats : SaveableObject
 {
     public string CharacterName { get; protected set; } = "NewCharacter";
     public bool IsDead { get; protected set; }
@@ -62,14 +62,17 @@ public class CharacterStats : MonoBehaviour, ISaveLoadInterface
     }
 
 
-    public void LoadState(GameData gameData)
+    public override void LoadState(GameData gameData)
     {
         IsDead = gameData.playerIsDead;
         currentHealth = gameData.playerCurrentHealth;
         maxHealth = gameData.playerMaxHealth;
+        Debug.Log("loading stat data");
     }
 
-    public void SaveState(GameData gameData)
+  
+
+    public override void SaveState(GameData gameData)
     {
         gameData.playerIsDead = IsDead;
         gameData.playerCurrentHealth = currentHealth;

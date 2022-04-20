@@ -5,18 +5,19 @@ using UnityEngine.AI;
 
 namespace Player
 {
-	public class Locomotion : MonoBehaviour, ISaveLoadInterface
+	public class Locomotion : SaveableObject
 	{
 		private CharacterStats stats;
 		public Transform currentTarget;
 		private NavMeshAgent agent;
 		[SerializeField] private float rotationSpeed = 8f;
 		private Vector3 lastPosition;
-		[SerializeField] private float walkSpeed=3.5f;
-		[SerializeField] private float runSpeed=7f;
+		[SerializeField] private float walkSpeed = 3.5f;
+		[SerializeField] private float runSpeed = 7f;
 		private RunManager runManager;
 		public float currentMovementSpeed { get; private set; }
 		private bool isRunning;
+
 		private void Start()
 		{
 			stats = GetComponent<CharacterStats>();
@@ -25,7 +26,7 @@ namespace Player
 			if (agent == null) Debug.LogError("Nav mesh agent not found");
 			runManager = GetComponent<RunManager>();
 			if (runManager == null) Debug.LogError("runManager not found");
-			
+
 			lastPosition = transform.position;
 			agent.speed = walkSpeed;
 		}
@@ -39,9 +40,9 @@ namespace Player
 				SetAutomaticRotation();
 				return;
 			}
+
 			Move(currentTarget.transform.position);
 			RotateTowardsTarget();
-
 		}
 
 		private void HandleRun()
@@ -51,7 +52,8 @@ namespace Player
 
 		private void UpdateCurrentSpeed()
 		{
-			currentMovementSpeed = Mathf.Lerp(currentMovementSpeed, (transform.position - lastPosition).magnitude / Time.deltaTime, 0.75f);
+			currentMovementSpeed = Mathf.Lerp(currentMovementSpeed,
+				(transform.position - lastPosition).magnitude / Time.deltaTime, 0.75f);
 			lastPosition = transform.position;
 		}
 
@@ -100,26 +102,27 @@ namespace Player
 		{
 			if (runManager.HasRunEnergy() && run) runManager.StartRunning();
 			else runManager.StopRunning();
-			
 		}
 
 		#region SaveLoad
-		
-		public void LoadState(GameData gameData)
+
+		public override void LoadState(GameData gameData)
 		{
 			UpdateTransform(gameData);
 		}
-		
-		public void SaveState(GameData gameData)
+
+		public override void SaveState(GameData gameData)
 		{
 			gameData.playerPosition = new SerializableVector(transform.position);
 		}
+
 		private void UpdateTransform(GameData gameData)
 		{
 			transform.position = gameData.playerPosition.GetVector();
-		//	transform.eulerAngles = gameData.playerPosition.rotation.GetVector();;
-			//transform.localScale = gameData.playerPosition.scale.GetVector();;
+
+			agent.SetDestination(transform.position);
 		}
+
 		#endregion
 	}
 }

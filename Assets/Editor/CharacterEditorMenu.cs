@@ -14,6 +14,14 @@ using UnityEngine;
 
 		    stats.Revive();
 	    }
+	    [MenuItem("Stuart/Player/DealDamage")]
+	    static  void DealDamage()
+	    {
+		    var stats = FindObjectOfType<PlayerStats>();
+		    if (stats == null) return;
+
+		    stats.TakeDamage(stats.currentHealth/10);
+	    }
 	    [MenuItem("Stuart/Player/Recover Run Energy")]
 	    static  void RecoverRunEnergy()
 	    {
