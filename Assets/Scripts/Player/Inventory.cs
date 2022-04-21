@@ -83,12 +83,20 @@ namespace Player
 
 		public override void  LoadState(GameData gameData)
 		{
-			slots = gameData.inventorySlots;
+			for (int i = 0; i < gameData.inventorySlots.Count; i++)
+			{
+				slots[i] = new InventorySlot(ItemBase.GetItemFromID(gameData.inventorySlots[i].item.itemID),gameData.inventorySlots[i].quantity);
+			}
 		}
 
 		public override void SaveState(GameData gameData)
 		{
-			gameData.inventorySlots = slots;
+			for (int i = 0; i < slots.Count; i++)
+			{
+				gameData.inventorySlots = new List<InventorySlot>();
+				gameData.inventorySlots.Add(new InventorySlot(slots[i]));
+				
+			}
 
 		}
 
@@ -104,6 +112,11 @@ namespace Player
 			{
 				this.item = item;
 				this.quantity = quantity;
+			}
+			public InventorySlot(InventorySlot slot)
+			{
+				this.item = slot.item;
+				this.quantity = slot.quantity;
 			}
 
 			public void Add(ItemBase item, int quantity)
