@@ -140,10 +140,10 @@ namespace Player
 		{
 			List<SaveDataSlot> saveDataSlots = (List<SaveDataSlot>) data;
 			slots = new List<InventorySlot>(capacity);
-			for (int i = 0; i < slots.Count; i++)
+			for (int i = 0; i < saveDataSlots.Count; i++)
 			{
-				slots[i] = new InventorySlot(ItemBase.GetItemFromID(saveDataSlots[i].itemId),
-					saveDataSlots[i].quantity);
+				slots.Insert(i,new InventorySlot(ItemBase.GetItemFromID(saveDataSlots[i].itemId),
+					saveDataSlots[i].quantity)); 
 			}
 		}
 
