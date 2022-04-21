@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace Player
 {
-	public class Locomotion : MonoBehaviour
+	public class Locomotion : MonoBehaviour, ISaveLoad
 	{
 		private CharacterStats stats;
 		public Transform currentTarget;
@@ -104,27 +104,29 @@ namespace Player
 			if (runManager.HasRunEnergy() && run) runManager.StartRunning();
 			else runManager.StopRunning();
 		}
-/*
+
 		#region SaveLoad
 
-		public void LoadState(GameData gameData)
+		
+		private void UpdateTransform(object data)
 		{
-			UpdateTransform(gameData);
-		}
-
-		public  void SaveState(GameData gameData)
-		{
-			gameData.playerPosition = new SerializableVector(transform.position);
-		}
-
-		private void UpdateTransform(GameData gameData)
-		{
-			transform.position = gameData.playerPosition.GetVector();
-
+			SerializableVector position = (SerializableVector) data;
+			transform.position = position.GetVector();
 			agent.SetDestination(transform.position);
 		}
 
 		#endregion
-		*/
+
+		public void LoadState(object data)
+		{
+			UpdateTransform(data);
+		}
+
+		public object SaveState()
+		{
+			return new SerializableVector(transform.position);
+		}
+		
+		
 	}
 }

@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
+using Save;
 using UnityEngine;
 
 namespace Player
 {
-	public class RunManager : MonoBehaviour
+	public class RunManager : MonoBehaviour, ISaveLoad
 	{
 		public event Action<float> OnRunEnergyChanged;
 		private float currentRunEnergy;
@@ -21,7 +22,7 @@ namespace Player
 			OnRunEnergyChanged?.Invoke(currentRunEnergy);
 			StartCoroutine(RunningCor());
 			locomotion = GetComponent<Locomotion>();
-			if(locomotion==null) Debug.LogError("missing locomotion");
+			if (locomotion == null) Debug.LogError("missing locomotion");
 		}
 
 		public bool HasRunEnergy()
@@ -29,11 +30,10 @@ namespace Player
 			return currentRunEnergy > 0 + Time.deltaTime;
 		}
 
-	
+
 		public void StartRunning()
 		{
 			isRunning = true;
-
 		}
 
 		IEnumerator RunningCor()
@@ -47,8 +47,9 @@ namespace Player
 				isRunning = false;
 				currentRunEnergy = 0;
 			}
-			if(locomotion.currentMovementSpeed<=0.01f) StopRunning();
-			
+
+			if (locomotion.currentMovementSpeed <= 0.01f) StopRunning();
+
 			StartCoroutine(RunningCor());
 		}
 
@@ -61,6 +62,26 @@ namespace Player
 		{
 			currentRunEnergy += amount;
 			if (currentRunEnergy > maxRunEnergy) currentRunEnergy = maxRunEnergy;
+		}
+
+		public void LoadState(object data)
+		{
+			OnRunEnergyChanged?.Invoke(currentRunEnergy);
+		}
+
+		public object SaveState()
+		{
+			return new SaveData()
+			{
+				currentRunEnergy = currentRunEnergy,
+				maxRunEnergy = maxRunEnergy
+			};
+		}
+[Serializable]
+		private struct SaveData
+		{
+			public float currentRunEnergy;
+			public float maxRunEnergy;
 		}
 	}
 }
