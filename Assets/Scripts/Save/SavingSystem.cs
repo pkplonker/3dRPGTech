@@ -7,7 +7,7 @@ namespace Save
 	public class SavingSystem : MonoBehaviour
 	{
 		public static SavingSystem instance { get; private set; }
-		private List<ISaveLoadInterface> saveableObjects;
+		private List<SaveableGameObject> saveableObjects;
 		private GameData gameData;
 		[SerializeField] private string fileName;
 		private SaveFileHandler saveFileHandler;
@@ -28,63 +28,55 @@ namespace Save
 
 		private void OnEnable()
 		{
-			saveableObjects = new List<ISaveLoadInterface>();
+			saveableObjects = new List<SaveableGameObject>();
 		}
-/*
-		private static List<ISaveLoadInterface> GetSaveableGameObjects()
-		{
-			IEnumerable<ISaveLoadInterface> data = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoadInterface>();
-			return new List<ISaveLoadInterface>(data);
-		}
-*/
+
 		public void NewGame()
 		{
-			gameData = new GameData();
-			Debug.LogWarning("Created new save file");
-		}
-
-		public void SaveGame()
-		{
-			foreach (var o in saveableObjects)
-			{
-				o.SaveState(gameData);
-			}
-
-			saveFileHandler.Save(gameData);
-			
 		}
 
 		public void LoadGame()
 		{
-			gameData = saveFileHandler.Load();
-
-			if (gameData == null)
-			{
-				Debug.LogWarning("No save state to load");
-				NewGame();
-			}
-
-			foreach (var o in saveableObjects)
-			{
-				o.LoadState(gameData);
-			}
-			Debug.LogWarning("All objects loaded successfully");
-
+			LoadData(saveFileHandler.Load());
 		}
-#if !UnityEditor
-		private void OnApplicationQuit()
+
+		public void SaveGame()
 		{
-			SaveGame();
+			var saveData = saveFileHandler.Load() ?? new Dictionary<string, object>();
+
+			SaveData(saveData);
+			saveFileHandler.Save(saveData);
 		}
-#endif
-		public void Subscribe(ISaveLoadInterface saveLoadInterface)
+
+		private void LoadData(Dictionary<string, object> data)
+		{
+			foreach (var saveableObject in saveableObjects)
+			{
+				if (data.TryGetValue(saveableObject.id, out object saveData))
+				{
+					saveableObject.LoadState(saveData);
+				}
+			}
+		}
+
+		private void SaveData(Dictionary<string, object> data)
+		{
+			foreach (var saveableObject in saveableObjects)
+			{
+				data[saveableObject.id] = saveableObject.SaveState();
+			}
+		}
+
+
+		public void Subscribe(SaveableGameObject saveLoadInterface)
 		{
 			if (!saveableObjects.Contains(saveLoadInterface))
 			{
 				saveableObjects.Add(saveLoadInterface);
 			}
 		}
-		public void UnSubscribe(ISaveLoadInterface saveLoadInterface)
+
+		public void UnSubscribe(SaveableGameObject saveLoadInterface)
 		{
 			if (saveableObjects.Contains(saveLoadInterface))
 			{

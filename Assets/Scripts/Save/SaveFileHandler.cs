@@ -1,70 +1,65 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Save;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public class SaveFileHandler
+namespace Save
 {
-	private string dataPath = "";
-	private string dataFileName = "";
-
-	public SaveFileHandler(string path, string filename)
+	public class SaveFileHandler
 	{
-		dataPath = path;
-		dataFileName = filename;
-	}
+		private string dataPath = "";
+		private string dataFileName = "";
 
-	public GameData Load()
-	{
-		string fullPath = Path.Combine(dataPath, dataFileName);
-		GameData loadedData = null;
-		if (File.Exists(fullPath))
+		public SaveFileHandler(string path, string filename)
 		{
-			try
+			dataPath = path;
+			dataFileName = filename;
+		}
+
+		public Dictionary<string, object> Load()
+		{
+			string fullPath = Path.Combine(dataPath, dataFileName);
+			Dictionary<string, object> loadedData = new Dictionary<string, object>();
+			if (File.Exists(fullPath))
 			{
-				string dataToLoad = "";
-				using (FileStream stream = new FileStream(fullPath, FileMode.Open))
+				try
 				{
-					using (StreamReader reader = new StreamReader(stream))
+					string dataToLoad = "";
+					using (FileStream stream = new FileStream(fullPath, FileMode.Open))
 					{
-						dataToLoad = reader.ReadToEnd();
+						BinaryFormatter formatter = new BinaryFormatter();
+						loadedData = (Dictionary<string, object>) formatter.Deserialize(stream);
 					}
 				}
+				catch (Exception exception)
+				{
+					Debug.LogError("Unable to load data from " + fullPath + "\n" + exception);
+					throw;
+				}
+			}
+			
+			Debug.LogWarning("Load successfully read");
+			return loadedData;
+		}
 
-				loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
+		public void Save(object data)
+		{
+			string fullPath = Path.Combine(dataPath, dataFileName);
+			try
+			{
+				Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? string.Empty);
+				BinaryFormatter formatter = new BinaryFormatter();
+				using FileStream stream = new FileStream(fullPath, FileMode.Create);
+				formatter.Serialize(stream, data);
 			}
 			catch (Exception exception)
 			{
-				Debug.LogError("Unable to load data from " + fullPath + "\n" + exception);
+				Debug.LogError("Unable to save data to file " + fullPath + "\n" + exception);
 				throw;
 			}
-		}
-		Debug.LogWarning("Load successfully read");
 
-		return loadedData;
-	}
-
-	public void Save(GameData data)
-	{
-		string fullPath = Path.Combine(dataPath, dataFileName);
-		try
-		{
-			Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
-			string dataToStore = JsonUtility.ToJson(data, true);
-			using FileStream stream = new FileStream(fullPath, FileMode.Create);
-			using (StreamWriter writer = new StreamWriter(stream))
-			{
-				writer.Write(dataToStore);
-			}
+			Debug.LogWarning("Saved successfully");
 		}
-		catch (Exception exception)
-		{
-			Debug.LogError("Unable to save data to file " + fullPath + "\n" + exception);
-			throw;
-		}
-		Debug.LogWarning("Saved successfully");
-
 	}
 }
