@@ -17,6 +17,13 @@ namespace Interactables
                 Destroy(gameObject);
             }
         }
+
+        public void Init(ItemBase item, int quantity )
+        {
+            if (item == null || quantity <= 0) return;
+            this.item = item;
+            this.quantity = quantity;
+        }
         
         
     }
