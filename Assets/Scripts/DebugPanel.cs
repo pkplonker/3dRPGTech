@@ -44,7 +44,7 @@ public class DebugPanel : MonoBehaviour
 
 	public void NewGame()
 	{
-		SavingSystem.instance.NewGame();
+		SavingSystem.instance.ClearSave();
 	}
 
 	public void LoadGame()

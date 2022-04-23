@@ -6,17 +6,21 @@ using UnityEngine;
 
 namespace Save
 {
-	public class SaveFileHandler
+	public class SaveFileHandler : ISaveLoadIO
 	{
 		private readonly string dataPath;
 		private readonly string dataFileName;
-
+		/// <summary>
+		/// Method <c>SaveFileHandler</c> Public constructor, requires path and filename
+		/// </summary>
 		public SaveFileHandler(string path, string filename)
 		{
 			dataPath = path;
 			dataFileName = filename;
 		}
-
+		/// <summary>
+		/// Method <c>Load</c> Public function, returns data from read file
+		/// </summary>
 		public Dictionary<string, object> Load()
 		{
 			string fullPath = Path.Combine(dataPath, dataFileName);
@@ -42,7 +46,9 @@ namespace Save
 			Debug.LogWarning("Load successfully read");
 			return loadedData;
 		}
-
+		/// <summary>
+		/// Method <c>Save</c> Public function, saves passed data to file
+		/// </summary>
 		public void Save(object data)
 		{
 			string fullPath = Path.Combine(dataPath, dataFileName);
@@ -61,7 +67,9 @@ namespace Save
 
 			Debug.LogWarning("Saved successfully");
 		}
-
+		/// <summary>
+		/// Method <c>Clear</c> Public function, deletes save file
+		/// </summary>
 		public void Clear()
 		{
 			string fullPath = Path.Combine(dataPath, dataFileName);

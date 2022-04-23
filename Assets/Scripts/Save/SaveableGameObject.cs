@@ -11,11 +11,13 @@ namespace Save
 
 		private void OnEnable()
 		{
+			if (SavingSystem.instance == null) return;
 			SavingSystem.instance.Subscribe(this);
 		}
 
 		private void OnDisable()
 		{
+			if (SavingSystem.instance == null) return;
 			SavingSystem.instance.UnSubscribe(this);
 		}
 
@@ -25,6 +27,9 @@ namespace Save
 			GenerateUniqueID();
 		}
 
+		/// <summary>
+		/// Method <c>GenerateUniqueID</c> Private function to generate unique ID if one does not exist
+		/// </summary>
 		private void GenerateUniqueID()
 		{
 			if (string.IsNullOrWhiteSpace(id))
@@ -33,11 +38,15 @@ namespace Save
 			}
 		}
 
+
+		//required for ISerializationCallbackReceiver interface
 		public void OnAfterDeserialize()
 		{
 		}
 
-
+		/// <summary>
+		/// Method <c>SaveState</c> Public function that gets all components implementing ISaveLoad on this object add adds saveData to return dictionary
+		/// </summary>
 		public Dictionary<string, object> SaveState()
 		{
 			var saveData = new Dictionary<string, object>();
@@ -49,6 +58,9 @@ namespace Save
 			return saveData;
 		}
 
+		/// <summary>
+		/// Method <c>LoadState</c> Public function that gets all components implementing ISaveLoad on this object add disseminates saveData to them
+		/// </summary>
 		public void LoadState(object data)
 		{
 			var saveData = (Dictionary<string, object>) data;

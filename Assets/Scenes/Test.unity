@@ -2132,6 +2132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1590564528}
+  - component: {fileID: 1590564530}
   - component: {fileID: 1590564529}
   m_Layer: 0
   m_Name: SaveSystem
@@ -2167,7 +2168,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2c39c47e864ba4da2a1ce8384b93ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: testGameData.json
+  fileName: Game.data
+--- !u!114 &1590564530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590564527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2c39c47e864ba4da2a1ce8384b93ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: Game.data
 --- !u!1 &1601625977
 GameObject:
   m_ObjectHideFlags: 0
