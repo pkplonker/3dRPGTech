@@ -8,8 +8,8 @@ namespace Save
 {
 	public class SaveFileHandler
 	{
-		private string dataPath = "";
-		private string dataFileName = "";
+		private readonly string dataPath;
+		private readonly string dataFileName;
 
 		public SaveFileHandler(string path, string filename)
 		{
@@ -20,12 +20,12 @@ namespace Save
 		public Dictionary<string, object> Load()
 		{
 			string fullPath = Path.Combine(dataPath, dataFileName);
+			if (string.IsNullOrWhiteSpace(fullPath)) throw new Exception("No Filepath supplied");
 			Dictionary<string, object> loadedData = new Dictionary<string, object>();
 			if (File.Exists(fullPath))
 			{
 				try
 				{
-					string dataToLoad = "";
 					using (FileStream stream = new FileStream(fullPath, FileMode.Open))
 					{
 						BinaryFormatter formatter = new BinaryFormatter();
@@ -60,6 +60,21 @@ namespace Save
 			}
 
 			Debug.LogWarning("Saved successfully");
+		}
+
+		public void Clear()
+		{
+			string fullPath = Path.Combine(dataPath, dataFileName);
+			try
+			{
+				if (!File.Exists(fullPath)) return;
+				File.Delete(fullPath);
+			}
+			catch (Exception exception)
+			{
+				Debug.LogError("Unable to clear save data file " + fullPath + "\n" + exception);
+				throw;
+			}
 		}
 	}
 }

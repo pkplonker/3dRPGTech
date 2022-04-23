@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace Save
 	{
 		public static SavingSystem instance { get; private set; }
 		private List<SaveableGameObject> saveableObjects;
-		private GameData gameData;
 		[SerializeField] private string fileName;
 		private SaveFileHandler saveFileHandler;
 
@@ -31,8 +31,15 @@ namespace Save
 			saveableObjects = new List<SaveableGameObject>();
 		}
 
+		private void Start()
+		{
+			LoadGame();
+		}
+
 		public void NewGame()
 		{
+			saveFileHandler ??= new SaveFileHandler(Application.persistentDataPath, fileName);
+			saveFileHandler.Clear();
 		}
 
 		public void LoadGame()
@@ -40,12 +47,18 @@ namespace Save
 			LoadData(saveFileHandler.Load());
 		}
 
-		public void SaveGame()
+		public void SaveGame(bool isNew=false)
 		{
-			var saveData = saveFileHandler.Load() ?? new Dictionary<string, object>();
-
+			Dictionary<string, object> saveData;
+			if (!isNew) saveData = new Dictionary<string, object>();
+			else saveData = saveFileHandler.Load() ?? new Dictionary<string, object>();
 			SaveData(saveData);
 			saveFileHandler.Save(saveData);
+		}
+
+		private void OnApplicationQuit()
+		{
+			SaveGame();
 		}
 
 		private void LoadData(Dictionary<string, object> data)

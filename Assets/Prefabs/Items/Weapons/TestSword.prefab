@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4386220037764585866}
   - component: {fileID: 1453587091437997911}
+  - component: {fileID: 5398484055093100644}
   m_Layer: 0
   m_Name: TestSword
   m_TagString: Untagged
@@ -27,10 +28,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.675, z: 2.818}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7848673108872050963}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1453587091437997911
 MonoBehaviour:
@@ -48,6 +50,19 @@ MonoBehaviour:
   interactionTransform: {fileID: 0}
   item: {fileID: 11400000, guid: 2431a4c21bee25c469e9a77a6b8ab10b, type: 2}
   quantity: 1
+--- !u!135 &5398484055093100644
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4386220037764585861}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7848673108872209715
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,8 +74,6 @@ GameObject:
   - component: {fileID: 7848673108872050963}
   - component: {fileID: 7848673108869183795}
   - component: {fileID: 7848673108870282227}
-  - component: {fileID: 493301815145412589}
-  - component: {fileID: 493301815145412588}
   m_Layer: 0
   m_Name: TestSword
   m_TagString: Untagged
@@ -78,6 +91,7 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4386220037764585866}
   m_RootOrder: 0
@@ -101,6 +115,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -131,32 +146,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &493301815145412589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7848673108872209715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2550d9dc77b7f7540acff93c6fc932b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionRadius: 2
-  interactionTransform: {fileID: 0}
-  item: {fileID: 11400000, guid: 2431a4c21bee25c469e9a77a6b8ab10b, type: 2}
-  quantity: 1
---- !u!135 &493301815145412588
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7848673108872209715}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.40266722
-  m_Center: {x: 0, y: -0.32237405, z: 0}

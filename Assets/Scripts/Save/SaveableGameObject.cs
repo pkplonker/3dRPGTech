@@ -7,7 +7,7 @@ namespace Save
 {
 	public class SaveableGameObject : MonoBehaviour, ISerializationCallbackReceiver
 	{
-		public string id { get; private set; }
+		public string id;
 
 		private void OnEnable()
 		{
@@ -19,7 +19,7 @@ namespace Save
 			SavingSystem.instance.UnSubscribe(this);
 		}
 
-	
+
 		public void OnBeforeSerialize()
 		{
 			GenerateUniqueID();
@@ -45,6 +45,7 @@ namespace Save
 			{
 				saveData[component.GetType().ToString()] = component.SaveState();
 			}
+
 			return saveData;
 		}
 

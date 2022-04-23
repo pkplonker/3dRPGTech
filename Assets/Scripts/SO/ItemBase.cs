@@ -29,6 +29,7 @@ namespace SO
 
 	    public static ItemBase GetItemFromID(string id)
 	    {
+		    if (id == null) return null;
 		    if (itemLookupCache == null)
 		    {
 			    itemLookupCache = new Dictionary<string, ItemBase>();
@@ -40,13 +41,11 @@ namespace SO
 					    Debug.LogError(string.Format("Duplicate items: {0} and {1}", itemLookupCache[item.itemID], item));
 					    continue;
 				    }
-					Debug.Log("added " + item.itemName + " to list");
 				    itemLookupCache[item.itemID] = item;
 			    }
 		    }
 
-		    if (id == null || !itemLookupCache.ContainsKey(id)) return null;
-		    return itemLookupCache[id];
+		    return !itemLookupCache.ContainsKey(id) ? null : itemLookupCache[id];
 	    }
     }
 }

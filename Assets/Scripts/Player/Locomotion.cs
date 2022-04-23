@@ -1,3 +1,4 @@
+using System;
 using Interactables;
 using Save;
 using SO;
@@ -19,7 +20,7 @@ namespace Player
 		public float currentMovementSpeed { get; private set; }
 		private bool isRunning;
 
-		private void Start()
+		private void Awake()
 		{
 			stats = GetComponent<CharacterStats>();
 			if (stats == null) Debug.LogError("Camera not found");
@@ -28,6 +29,11 @@ namespace Player
 			runManager = GetComponent<RunManager>();
 			if (runManager == null) Debug.LogError("runManager not found");
 
+		}
+
+		private void Start()
+		{
+			
 			lastPosition = transform.position;
 			agent.speed = walkSpeed;
 		}

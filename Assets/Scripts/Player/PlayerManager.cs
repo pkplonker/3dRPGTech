@@ -1,6 +1,7 @@
 using System;
 using Interactables;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Player
 {
@@ -28,7 +29,7 @@ namespace Player
 
 		private void Update()
 		{
-			if (inputHandler.LeftClick)
+			if (inputHandler.LeftClick && !EventSystem.current.IsPointerOverGameObject())
 			{
 				Ray ray = playerCamera.ScreenPointToRay(inputHandler.MousePosition);
 				if (!Physics.Raycast(ray, out RaycastHit hit, 100, movementMask)) return;
