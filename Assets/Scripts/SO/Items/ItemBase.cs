@@ -14,7 +14,8 @@ namespace SO
 	    public uint maxQuantity = uint.MaxValue;
 	    public abstract bool Use(Inventory inventory);
 	    static Dictionary<string, ItemBase> itemLookupCache;
-
+	    public Mesh mesh;
+	    public Material material;
 	    public void OnBeforeSerialize()
 	    {
 		    if (string.IsNullOrWhiteSpace(itemID))

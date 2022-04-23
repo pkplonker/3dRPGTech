@@ -13,6 +13,8 @@ namespace Save
 		private ISaveLoadIO output;
 		public event Action OnSave;
 		public event Action OnLoad;
+		[SerializeField] private bool loadOnStart = true;
+		[SerializeField] private bool saveOnExit = true;
 
 		private void Awake()
 		{
@@ -41,7 +43,7 @@ namespace Save
 
 		private void Start()
 		{
-			LoadGame();
+			if(loadOnStart) LoadGame();
 		}
 		/// <summary>
 		/// Method <c>ClearSave</c> Public function to clear existing save file
@@ -73,7 +75,7 @@ namespace Save
 
 		private void OnApplicationQuit()
 		{
-			SaveGame();
+			if(saveOnExit) SaveGame();
 		}
 		/// <summary>
 		/// Method <c>LoadData</c> Private function to distribute data to saveableobjects

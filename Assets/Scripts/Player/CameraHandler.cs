@@ -19,11 +19,8 @@ public class CameraHandler : MonoBehaviour
     [SerializeField] private Vector3 cameraOffset;
     [SerializeField] private float cameraZoomMin;
     [SerializeField] private float cameraZoomMax;
-
     private float currentZoomLevel;
-    [Header("Movement")]
     private float currentYaw;
-
     private Vector3 currentTargetPosition;
     
     private void Awake()

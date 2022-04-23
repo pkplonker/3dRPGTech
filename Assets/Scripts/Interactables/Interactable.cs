@@ -5,8 +5,8 @@ namespace Interactables
 {
 	public abstract class Interactable : MonoBehaviour
 	{
+		[Header("Interaction")]
 		[SerializeField] protected float interactionRadius = 2f;
-
 		[SerializeField] protected Transform interactionTransform;
 		protected Transform interactor;
 		private float radiusMagnitude;

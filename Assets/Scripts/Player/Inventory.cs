@@ -36,6 +36,23 @@ namespace Player
 			}
 		}
 
+		public bool AddItemToSlot(ItemBase item, int quantity, int slotIndex)
+		{
+			if (slotIndex > slots.Count || slots[slotIndex] == null) return false;
+			if (slots[slotIndex].item != null || item.maxQuantity < quantity) return false;
+			slots[slotIndex].Add(item, quantity);
+			return true;
+		}
+
+		public bool RemoveItemFromSlot(int slotIndex, int quantity)
+		{
+			if (slotIndex > slots.Count || slots[slotIndex] == null) return false;
+			if (slots[slotIndex].item == null) return false;
+			if (quantity > slots[slotIndex].quantity) return false;
+			slots[slotIndex].Remove(quantity);
+			return true;
+		}
+
 		public bool Add(ItemBase item, int quantity)
 		{
 			foreach (var t in slots.Where(t =>
@@ -102,8 +119,8 @@ namespace Player
 
 			public InventorySlot(InventorySlot slot)
 			{
-				this.item = slot.item;
-				this.quantity = slot.quantity;
+				item = slot.item;
+				quantity = slot.quantity;
 			}
 
 
@@ -142,8 +159,8 @@ namespace Player
 			slots = new List<InventorySlot>(capacity);
 			for (int i = 0; i < saveDataSlots.Count; i++)
 			{
-				slots.Insert(i,new InventorySlot(ItemBase.GetItemFromID(saveDataSlots[i].itemId),
-					saveDataSlots[i].quantity)); 
+				slots.Insert(i, new InventorySlot(ItemBase.GetItemFromID(saveDataSlots[i].itemId),
+					saveDataSlots[i].quantity));
 			}
 		}
 
@@ -152,7 +169,7 @@ namespace Player
 			List<SaveDataSlot> saveDataSlots = new List<SaveDataSlot>(capacity);
 			for (int i = 0; i < slots.Count; i++)
 			{
-				saveDataSlots.Insert(i,new SaveDataSlot(slots[i])); 
+				saveDataSlots.Insert(i, new SaveDataSlot(slots[i]));
 			}
 
 			return saveDataSlots;
