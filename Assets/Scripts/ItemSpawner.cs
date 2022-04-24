@@ -19,31 +19,39 @@ public class ItemSpawner : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void Spawn(ItemBase item, int quantity = 1, float despawnTime = 0, Vector3 position = new Vector3())
+	public  void Spawn(ItemBase item, int quantity = 1, float despawnTime = 0, Vector3 position = new Vector3())
+	{
+		GameObject newGameObject= SpawnObject(item, quantity, despawnTime, position, colliderRadius,transform);
+		if(newGameObject!=null)
+		spawnedGameobjects.Add(newGameObject);
+	}
+
+	public static GameObject SpawnObject(ItemBase item, int quantity, float despawnTime, Vector3 position, float colliderRadius, Transform parent=null)
 	{
 		if (item == null || item.meshDetailsList == null || item.meshDetailsList.Count == 0)
 		{
 			Debug.Log("Item information missing");
-			return;
+			return null;
 		}
 
-		GameObject newGameObject = new GameObject();
+	 GameObject	newGameObject = new GameObject();
 		SetBasicDetails(item, newGameObject);
 		SetMesh(item, newGameObject);
-		SetTransform(position, newGameObject, item);
-		SetCollider(newGameObject, item);
+		SetTransform(position, newGameObject, item,parent);
+		SetCollider(newGameObject, item, colliderRadius);
 		Despawner despawner = null;
 		if (despawnTime > 0)
 		{
 			despawner = newGameObject.AddComponent<Despawner>();
-			despawner.Init(this, despawnTime);
+			despawner.Init( despawnTime);
 		}
 
 		newGameObject.AddComponent<Pickup>().Init(item, quantity);
-		spawnedGameobjects.Add(newGameObject);
+		return null;
 	}
 
-	private void SetCollider(GameObject newGameObject, ItemBase item)
+
+	private static void SetCollider(GameObject newGameObject, ItemBase item, float colliderRadius)
 	{
 		newGameObject.AddComponent<SphereCollider>().radius = colliderRadius / item.scaleFactor;
 	}
@@ -68,10 +76,10 @@ public class ItemSpawner : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	private void SetTransform(Vector3 position, GameObject newGameObject, ItemBase item)
+	private static void SetTransform(Vector3 position, GameObject newGameObject, ItemBase item, Transform parent = null)
 	{
 		newGameObject.transform.position = position;
-		newGameObject.transform.parent = transform;
+		newGameObject.transform.parent = parent;
 		newGameObject.transform.localScale = new Vector3(item.scaleFactor, item.scaleFactor, item.scaleFactor);
 		newGameObject.transform.rotation = item.spawnRotation;
 	}

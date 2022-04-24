@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using Interactables;
 using Save;
 using SO;
 using UnityEngine;
@@ -5,13 +8,13 @@ using UnityEngine;
 public class WorldItemSpawner : MonoBehaviour
 {
 	private ItemSpawner itemSpawner;
-
+	[SerializeField] private List<Pickup> pickups = new List<Pickup>();
 	private void Awake()
 	{
 		itemSpawner = GetComponent<ItemSpawner>();
 	}
-
 	
+
 
 	private void Spawn(ItemBase item, int quantity = 1, float despawnTime = 0, Vector3 position = new Vector3())
 	{

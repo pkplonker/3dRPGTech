@@ -6,7 +6,7 @@ using UnityEngine;
 
     public class CharacterEditorMenu : MonoBehaviour
     {
-	    [MenuItem("Stuart/Player/Revive")]
+	    [MenuItem("Custom/Player/Revive")]
 	    static  void Revive()
 	    {
 		    var stats = FindObjectOfType<PlayerStats>();
@@ -14,7 +14,7 @@ using UnityEngine;
 
 		    stats.Revive();
 	    }
-	    [MenuItem("Stuart/Player/DealDamage")]
+	    [MenuItem("Custom/Player/DealDamage")]
 	    static  void DealDamage()
 	    {
 		    var stats = FindObjectOfType<PlayerStats>();
@@ -22,7 +22,7 @@ using UnityEngine;
 
 		    stats.TakeDamage(stats.currentHealth/10);
 	    }
-	    [MenuItem("Stuart/Player/Recover Run Energy")]
+	    [MenuItem("Custom/Player/Recover Run Energy")]
 	    static  void RecoverRunEnergy()
 	    {
 		    var runManager = FindObjectOfType<RunManager>();
@@ -30,7 +30,7 @@ using UnityEngine;
 
 		    runManager.RecoverRun(10000);
 	    }
-	    [MenuItem("Stuart/Player/Reset Position")]
+	    [MenuItem("Custom/Player/Reset Position")]
 	    static  void ResetPosition()
 	    {
 		    var locomotion = FindObjectOfType<Locomotion>();

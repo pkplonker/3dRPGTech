@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SaveLoadEditor : MonoBehaviour
 {
-	[MenuItem("EasySave/Save")]
+	[MenuItem("Stuart Heath - Easy Save/Save")]
 	static void SaveGame()
 	{
 		var savingSystem = FindObjectOfType<SavingSystem>();
@@ -15,7 +15,7 @@ public class SaveLoadEditor : MonoBehaviour
 		savingSystem.SaveGame();
 	}
 
-	[MenuItem("EasySave/Load")]
+	[MenuItem("Stuart Heath - Easy Save/Load")]
 	static void LoadGame()
 	{
 		var savingSystem = FindObjectOfType<SavingSystem>();
@@ -24,7 +24,7 @@ public class SaveLoadEditor : MonoBehaviour
 		savingSystem.LoadGame();
 	}
 
-	[MenuItem("EasySave/ClearSaveData")]
+	[MenuItem("Stuart Heath - Easy Save/ClearSaveData")]
 	static void NewGame()
 	{
 		var savingSystem = FindObjectOfType<SavingSystem>();
@@ -33,7 +33,7 @@ public class SaveLoadEditor : MonoBehaviour
 		savingSystem.ClearSave();
 	}
 
-	[MenuItem("GameObject/EasySave/Create New Save System", false, 0)]
+	[MenuItem("GameObject/Stuart Heath - Easy Save/Create New Save System", false, 0)]
 	static void NewSaveSystem()
 	{
 		var savingSystem = FindObjectOfType<SavingSystem>();

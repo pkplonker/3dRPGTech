@@ -16,8 +16,13 @@ namespace Interactables
             base.Interact(inventory);
             if (inventory.Add(item, quantity))
             {
-                Destroy(gameObject);
+                HandlePickedup();
             }
+        }
+
+        private void HandlePickedup()
+        {
+            Destroy(gameObject);
         }
 
         public void Init(ItemBase item, int quantity )
