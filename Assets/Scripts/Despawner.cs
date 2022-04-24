@@ -1,17 +1,16 @@
 using System.Collections;
 using Save;
 using UnityEngine;
-
 public class Despawner : MonoBehaviour
 {
    public float remainingTime { get; private set; }
    public void Init(ItemSpawner spawner, float despawnTime)
    {
       remainingTime = despawnTime;
-      StartCoroutine(Despawn(remainingTime));
+      StartCoroutine(Despawn());
    }
 
-   IEnumerator Despawn(float remainingTime)
+   IEnumerator Despawn()
    {
       while(remainingTime > 0f) 
       {
@@ -21,6 +20,5 @@ public class Despawner : MonoBehaviour
       Destroy(gameObject);
    }
 
-
- 
+   
 }

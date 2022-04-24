@@ -1,14 +1,16 @@
+using System;
 using Player;
+using Save;
 using SO;
-using UnityEditor;
 using UnityEngine;
 
 namespace Interactables
 {
+
     public class Pickup : Interactable
     {
-        [SerializeField] private ItemBase item;
-        [SerializeField] private int quantity=1;
+        public ItemBase item { get; private set; }
+        public int quantity { get; private set; } = 1;
         protected override void Interact(Inventory inventory)
         {
             base.Interact(inventory);
@@ -24,7 +26,9 @@ namespace Interactables
             this.item = item;
             this.quantity = quantity;
         }
-        
+
+
+
         
     }
 }

@@ -1,14 +1,15 @@
-
+using System;
 using System.Collections.Generic;
 using Interactables;
+using Save;
 using SO;
 using UnityEngine;
 
-public class ItemSpawner : MonoBehaviour
+public class ItemSpawner : MonoBehaviour, ISaveLoad
 {
 	[SerializeField] private ItemBase item;
-	private List<GameObject> items = new List<GameObject>();
 	private float colliderRadius = 0.5f;
+	private List<GameObject> spawnedGameobjects = new List<GameObject>();
 
 	private void Update()
 	{
@@ -20,24 +21,26 @@ public class ItemSpawner : MonoBehaviour
 
 	public void Spawn(ItemBase item, int quantity = 1, float despawnTime = 0, Vector3 position = new Vector3())
 	{
-		if (item == null || item.meshDetailsList == null || item.meshDetailsList.Count==0)
+		if (item == null || item.meshDetailsList == null || item.meshDetailsList.Count == 0)
 		{
 			Debug.Log("Item information missing");
 			return;
 		}
-		
+
 		GameObject newGameObject = new GameObject();
 		SetBasicDetails(item, newGameObject);
-		items.Add(newGameObject);
 		SetMesh(item, newGameObject);
 		SetTransform(position, newGameObject, item);
 		SetCollider(newGameObject, item);
+		Despawner despawner = null;
 		if (despawnTime > 0)
 		{
-			newGameObject.AddComponent<Despawner>().Init(this, despawnTime);
+			despawner = newGameObject.AddComponent<Despawner>();
+			despawner.Init(this, despawnTime);
 		}
 
 		newGameObject.AddComponent<Pickup>().Init(item, quantity);
+		spawnedGameobjects.Add(newGameObject);
 	}
 
 	private void SetCollider(GameObject newGameObject, ItemBase item)
@@ -54,18 +57,15 @@ public class ItemSpawner : MonoBehaviour
 				Debug.LogWarning("Missing meshDetails for " + item.itemName);
 				continue;
 			}
+
 			GameObject model = new GameObject();
 			model.name = meshDetails.mesh.name;
-			MeshFilter meshFilter = model.AddComponent<MeshFilter>();
-			meshFilter.mesh = meshDetails.mesh;
-			MeshRenderer meshRenderer = model.AddComponent<MeshRenderer>();
-			meshRenderer.material = meshDetails.material;
+			model.AddComponent<MeshFilter>().mesh = meshDetails.mesh;
+			model.AddComponent<MeshRenderer>().material = meshDetails.material;
 			model.transform.SetParent(newGameObject.transform);
 			model.transform.localScale = Vector3.one;
-			model.transform.rotation= Quaternion.identity;
-			
+			model.transform.rotation = Quaternion.identity;
 		}
-		
 	}
 
 	private void SetTransform(Vector3 position, GameObject newGameObject, ItemBase item)
@@ -79,5 +79,56 @@ public class ItemSpawner : MonoBehaviour
 	private static void SetBasicDetails(ItemBase item, GameObject newGameObject)
 	{
 		newGameObject.name = item.itemName + " : " + Time.time;
+	}
+
+
+	public void LoadState(object data)
+	{
+		foreach (var obj in spawnedGameobjects)
+		{
+			if(obj!=null) Destroy(obj);
+		}
+
+		spawnedGameobjects = new List<GameObject>();
+		List<SaveData> savedData = (List<SaveData>) data;
+		if (data == null) return;
+		foreach (var sData in savedData)
+		{
+			Spawn(ItemBase.GetItemFromID(sData.itemId),sData.quantity,sData.remainingTime,SerializableVector.GetVector(sData.position));
+		}
+	}
+
+	public object SaveState()
+	{
+		List<SaveData> data = new List<SaveData>();
+		foreach (var obj in spawnedGameobjects)
+		{
+			if(obj==null) continue;
+			data.Add(new SaveData(obj));
+		}
+		return data;
+	}
+
+	[Serializable]
+	private class SaveData
+	{
+		public string itemId;
+		public float remainingTime;
+		public int quantity;
+		public SerializableVector position;
+		public SaveData(GameObject obj)
+		{
+			if (obj.TryGetComponent( out Pickup pickup))
+			{
+				itemId = pickup.item.itemID;
+				quantity = pickup.quantity;
+			}
+			if (obj.TryGetComponent( out Despawner despawner))
+			{
+				remainingTime = despawner.remainingTime;
+			}
+
+			position = new SerializableVector(obj.transform.position);
+		}
 	}
 }

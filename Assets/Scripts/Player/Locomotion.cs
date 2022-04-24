@@ -117,7 +117,7 @@ namespace Player
 		private void UpdateTransform(object data)
 		{
 			SerializableVector position = (SerializableVector) data;
-			transform.position = position.GetVector();
+			transform.position = SerializableVector.GetVector(position);
 			agent.SetDestination(transform.position);
 		}
 

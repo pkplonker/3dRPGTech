@@ -1,9 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using Save;
+using SO;
 using UnityEngine;
 
 public class WorldItemSpawner : MonoBehaviour
 {
-    
+	private ItemSpawner itemSpawner;
+
+	private void Awake()
+	{
+		itemSpawner = GetComponent<ItemSpawner>();
+	}
+
+	
+
+	private void Spawn(ItemBase item, int quantity = 1, float despawnTime = 0, Vector3 position = new Vector3())
+	{
+		itemSpawner.Spawn(item, quantity, despawnTime, position);
+	}
+
+
+
+	
+
+
 }

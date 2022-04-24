@@ -20,21 +20,21 @@ namespace Save
 		{
 			#region Singleton
 
-			if (instance == null )
+			if (instance == null)
 			{
 				instance = this;
 			}
-			else if(instance!=this)
+			else if (instance != this)
 			{
 				Debug.LogWarning("Destroying" + this + " on gameobject " + gameObject.name + " due to singleton");
 				Destroy(this);
 			}
+
 			#endregion
 
 			output = new SaveLoadIOMediator().CreateSaveLoadExternal(fileName);
 		}
 
-		
 
 		private void OnEnable()
 		{
@@ -43,8 +43,9 @@ namespace Save
 
 		private void Start()
 		{
-			if(loadOnStart) LoadGame();
+			if (loadOnStart) LoadGame();
 		}
+
 		/// <summary>
 		/// Method <c>ClearSave</c> Public function to clear existing save file
 		/// </summary>
@@ -53,6 +54,7 @@ namespace Save
 			output ??= new SaveFileHandler(Application.persistentDataPath, fileName);
 			output.Clear();
 		}
+
 		/// <summary>
 		/// Method <c>LoadGame</c> Public function to load existing save file
 		/// </summary>
@@ -60,10 +62,11 @@ namespace Save
 		{
 			LoadData(output.Load());
 		}
+
 		/// <summary>
 		/// Method <c>SaveGame</c> Public function to save new changes
 		/// </summary>
-		public void SaveGame(bool isNew=false)
+		public void SaveGame(bool isNew = false)
 		{
 			Dictionary<string, object> saveData;
 			if (!isNew) saveData = new Dictionary<string, object>();
@@ -71,12 +74,13 @@ namespace Save
 			SaveData(saveData);
 			output.Save(saveData);
 		}
-		
+
 
 		private void OnApplicationQuit()
 		{
-			if(saveOnExit) SaveGame();
+			if (saveOnExit) SaveGame();
 		}
+
 		/// <summary>
 		/// Method <c>LoadData</c> Private function to distribute data to saveableobjects
 		/// </summary>
@@ -89,13 +93,16 @@ namespace Save
 					saveableObjects.Remove(saveableObject);
 					continue;
 				}
+
 				if (data.TryGetValue(saveableObject.id, out object saveData))
 				{
 					saveableObject.LoadState(saveData);
 				}
 			}
+
 			OnLoad?.Invoke();
 		}
+
 		/// <summary>
 		/// Method <c>SaveData</c> Private function to collate save data from saveableObjects
 		/// </summary>
@@ -108,8 +115,12 @@ namespace Save
 					saveableObjects.Remove(saveableObject);
 					continue;
 				}
-				data[saveableObject.id] = saveableObject.SaveState();
+
+				if (saveableObject.id == null) Debug.Log("ff");
+				object obj = saveableObject.SaveState();
+				if (obj != null) data[saveableObject.id] = saveableObject.SaveState();
 			}
+
 			OnSave?.Invoke();
 		}
 
@@ -123,6 +134,7 @@ namespace Save
 				saveableObjects.Add(saveLoadInterface);
 			}
 		}
+
 		/// <summary>
 		/// Method <c>UnSubscribe</c> Public observer pattern unsubscription
 		/// </summary>

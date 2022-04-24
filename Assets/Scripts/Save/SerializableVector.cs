@@ -28,9 +28,9 @@ namespace Save
             this.z = z;
         }
 
-        public Vector3 GetVector()
+        public static Vector3 GetVector(SerializableVector v)
         {
-            return new Vector3(x, y, z);
+            return new Vector3(v.x, v.y, v.z);
         }
     }
 }
