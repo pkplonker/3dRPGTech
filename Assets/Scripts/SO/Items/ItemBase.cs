@@ -18,10 +18,11 @@ namespace SO
 		public Sprite sprite;
 
 		[Header("Graphical representation - 3D")]
-		public Mesh mesh;
+		public List<MeshDetails> meshDetailsList;
 
-		public Material material;
-		public Vector3 scale = Vector3.one;
+
+		public float scaleFactor = 1f;
+		public Quaternion spawnRotation = Quaternion.identity;
 
 		public void OnBeforeSerialize()
 		{
@@ -59,5 +60,12 @@ namespace SO
 
 			return !itemLookupCache.ContainsKey(id) ? null : itemLookupCache[id];
 		}
+		[Serializable]
+		public class MeshDetails
+		{
+			public Mesh mesh;
+			public Material material;
+		}
 	}
+
 }

@@ -1681,7 +1681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c22aad190befd9499a4a371e69fa2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 409fb7bb5023a44418b84164fddcbebf, type: 2}
+  item: {fileID: 11400000, guid: beef38f7327109b4a8420b0c82dd554f, type: 2}
 --- !u!1 &1282204247
 GameObject:
   m_ObjectHideFlags: 0
@@ -2182,7 +2182,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1590564528}
   - component: {fileID: 1590564530}
-  - component: {fileID: 1590564529}
   m_Layer: 0
   m_Name: SaveSystem
   m_TagString: Untagged
@@ -2205,21 +2204,6 @@ Transform:
   m_Father: {fileID: 316399203}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1590564529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1590564527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b2c39c47e864ba4da2a1ce8384b93ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fileName: Game.data
-  loadOnStart: 1
-  saveOnExit: 1
 --- !u!114 &1590564530
 MonoBehaviour:
   m_ObjectHideFlags: 0
