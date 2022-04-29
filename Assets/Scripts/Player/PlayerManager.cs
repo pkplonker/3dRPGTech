@@ -29,21 +29,19 @@ namespace Player
 
 		private void Update()
 		{
-			if (inputHandler.LeftClick && !EventSystem.current.IsPointerOverGameObject())
+			if (!inputHandler.LeftClick || EventSystem.current.IsPointerOverGameObject()) return;
+			Ray ray = playerCamera.ScreenPointToRay(inputHandler.MousePosition);
+			if (!Physics.Raycast(ray, out RaycastHit hit, 100, movementMask)) return;
+			Interactable interactable = hit.collider.GetComponent<Interactable>();
+			if (interactable)
 			{
-				Ray ray = playerCamera.ScreenPointToRay(inputHandler.MousePosition);
-				if (!Physics.Raycast(ray, out RaycastHit hit, 100, movementMask)) return;
-				Interactable interactable = hit.collider.GetComponent<Interactable>();
-				if (interactable)
-				{
-					SetFocus(interactable);
-					return;
-				}
-
-				Defocus();
-				locomotion.Move(hit.point);
-				locomotion.SetRun(inputHandler.Shift);
+				SetFocus(interactable);
+				return;
 			}
+
+			Defocus();
+			locomotion.Move(hit.point);
+			locomotion.SetRun(inputHandler.Shift);
 		}
 
 		private void SetFocus(Interactable interactable)

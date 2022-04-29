@@ -10,9 +10,10 @@ namespace Player
 	[Serializable]
 	public class Inventory : MonoBehaviour, ISaveLoad
 	{
-		private List<InventorySlot> slots;
+		public List<InventorySlot> slots { get; private set; }
 		[SerializeField] private int capacity;
-
+		public event Action OnInventoryChanged;
+		public int GetCapacity() => capacity;
 		private void Start()
 		{
 			FillSlotCapacity();
@@ -41,6 +42,8 @@ namespace Player
 			if (slotIndex > slots.Count || slots[slotIndex] == null) return false;
 			if (slots[slotIndex].item != null || item.maxQuantity < quantity) return false;
 			slots[slotIndex].Add(item, quantity);
+			OnInventoryChanged?.Invoke();
+
 			return true;
 		}
 
@@ -50,6 +53,8 @@ namespace Player
 			if (slots[slotIndex].item == null) return false;
 			if (quantity > slots[slotIndex].quantity) return false;
 			slots[slotIndex].Remove(quantity);
+			OnInventoryChanged?.Invoke();
+
 			return true;
 		}
 
@@ -59,12 +64,14 @@ namespace Player
 				t.item != null && t.item == item && t.quantity + quantity <= t.item.maxQuantity))
 			{
 				t.Add(item, quantity);
+				OnInventoryChanged?.Invoke();
 				return true;
 			}
 
 			foreach (var t in slots.Where(t => t.item == null))
 			{
 				t.Add(item, quantity);
+				OnInventoryChanged?.Invoke();
 				return true;
 			}
 
@@ -91,13 +98,11 @@ namespace Player
 					t.Remove(quantityRemaining);
 					break;
 				}
-				else
-				{
-					quantityRemaining -= t.quantity;
-					t.Remove(t.quantity);
-				}
-			}
 
+				quantityRemaining -= t.quantity;
+				t.Remove(t.quantity);
+			}
+			OnInventoryChanged?.Invoke();
 			return true;
 		}
 
