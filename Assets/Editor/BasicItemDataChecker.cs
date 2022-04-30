@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using SO;
 using UnityEditor;
@@ -16,7 +15,7 @@ public class BasicItemDataChecker : EditorWindow
 		GetWindow(typeof(BasicItemDataChecker));
 	}
 
-	private static string ItemPassesChecks(ItemBase item)
+	public static string ItemPassesChecks(ItemBase item)
 	{
 		if (item == null) return "Error";
 		if (item.itemID == null) return "Missing item ID";
@@ -93,4 +92,7 @@ public class BasicItemDataChecker : EditorWindow
 			}
 		}
 	}
+	
+	
+
 }
