@@ -8,12 +8,12 @@ using Object = UnityEngine.Object;
 
 public class BasicItemDataChecker : EditorWindow
 {
-	[SerializeField] static List<ItemBase> failedItems = new ();
-	
+	[SerializeField] static List<ItemBase> failedItems = new();
+
 	[MenuItem("Custom/Items/ItemChecker")]
 	public static void ItemChecker()
 	{
-		 GetWindow(typeof(BasicItemDataChecker));
+		GetWindow(typeof(BasicItemDataChecker));
 	}
 
 	private static string ItemPassesChecks(ItemBase item)
@@ -41,26 +41,38 @@ public class BasicItemDataChecker : EditorWindow
 
 	private void OnGUI()
 	{
-		if (GUILayout.Button("Check"))
+		EditorGUILayout.Separator();
+		EditorGUILayout.Separator();
+
+		if (GUILayout.Button("Recheck All Items"))
 		{
 			failedItems.Clear();
 			Check();
 		}
-		
+
 		//ItemBase[] fItems = failedItems.ToArray();
 		List<SerializedObject> objs = new();
 		foreach (var i in failedItems)
 		{
-			objs.Add(new UnityEditor.SerializedObject(i)); 
-
+			objs.Add(new UnityEditor.SerializedObject(i));
 		}
+
+		EditorGUILayout.Separator();
+
 		GUILayout.Label("The following objects failed their basic checks:", EditorStyles.boldLabel);
+		EditorGUILayout.Separator();
+
 		foreach (var i in objs)
 		{
-			EditorGUILayout.PropertyField(i.FindProperty("failedCheckWarning"), new GUIContent("Failure = "), true);
+			Rect rect = EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField(i.FindProperty("failedCheckWarning").stringValue);
 			EditorGUILayout.ObjectField(i.targetObject, typeof(Object), false);
+			EditorGUILayout.Separator();
+			EditorGUILayout.EndHorizontal();
+			EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
 		}
+
 		if (GUILayout.Button("Close"))
 		{
 			this.Close();
@@ -74,13 +86,11 @@ public class BasicItemDataChecker : EditorWindow
 		foreach (var item in items)
 		{
 			string response = ItemPassesChecks(item);
-			if (response!="PassedChecks")
+			if (response != "PassedChecks")
 			{
 				item.failedCheckWarning = response;
 				failedItems.Add(item);
 			}
 		}
-
-		
 	}
 }
