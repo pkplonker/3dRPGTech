@@ -20,6 +20,7 @@ namespace SO
 		[Header("Graphical representation - 3D")]
 		public List<MeshDetails> meshDetailsList;
 
+		[HideInInspector] public string failedCheckWarning;
 
 		public float scaleFactor = 1f;
 		public Quaternion spawnRotation = Quaternion.identity;
