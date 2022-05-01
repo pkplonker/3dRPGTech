@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class InventorySlot : MonoBehaviour
+    public class InventorySlotUI : MonoBehaviour
     {
 	    [SerializeField] private TextMeshProUGUI textMesh;
 	    [SerializeField] private Image iconImage;
@@ -23,7 +23,7 @@ namespace UI
 		    button.onClick.AddListener(ButtonClick);
 	    }
 
-	    public InventorySlot Init(Inventory inventory, int index)
+	    public InventorySlotUI Init(Inventory inventory, int index)
 	    {
 		    if (inventory == null)
 		    {

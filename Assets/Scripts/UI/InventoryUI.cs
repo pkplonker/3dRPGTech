@@ -11,7 +11,7 @@ namespace UI
 	{
 		[SerializeField] private GameObject inventorySlotPrefab;
 		[SerializeField] private Transform slotContainer;
-		private List<InventorySlot> inventorySlots = new();
+		private List<InventorySlotUI> inventorySlots = new();
 
 		private Inventory inventory;
 
@@ -57,7 +57,7 @@ namespace UI
 		{
 			for (int i = 0; i < inventory.GetCapacity(); i++)
 			{
-				inventorySlots.Add(Instantiate(inventorySlotPrefab, slotContainer).GetComponent<InventorySlot>().Init(inventory, i));
+				inventorySlots.Add(Instantiate(inventorySlotPrefab, slotContainer).GetComponent<InventorySlotUI>().Init(inventory, i));
 			}
 		}
 	}

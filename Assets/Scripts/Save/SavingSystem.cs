@@ -116,7 +116,7 @@ namespace Save
 					continue;
 				}
 
-				if (saveableObject.id == null) Debug.Log("ff");
+				if (saveableObject.id == null) Debug.Log("missing object ID");
 				object obj = saveableObject.SaveState();
 				if (obj != null) data[saveableObject.id] = saveableObject.SaveState();
 			}
