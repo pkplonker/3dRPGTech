@@ -15,8 +15,7 @@ namespace UI
 
 		private Inventory inventory;
 
-
-		private void Start()
+		private void Awake()
 		{
 			inventory= PlayerManager.Instance.GetComponent<Inventory>();
 			if (inventory == null)
@@ -24,10 +23,17 @@ namespace UI
 				Debug.LogWarning("Missing inventory");
 				return;
 			}
+		}
 
-			inventory.OnInventoryChanged += UpdateUI;
-
+		private void OnEnable()
+		{
 			SetUpSlots();
+			inventory.OnInventoryChanged += UpdateUI;
+		}
+
+		private void Start()
+		{
+			
 		}
 
 		private void OnDisable()
