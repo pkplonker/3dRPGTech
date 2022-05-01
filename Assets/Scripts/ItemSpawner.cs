@@ -19,14 +19,15 @@ public class ItemSpawner : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public  void Spawn(ItemBase item, int quantity = 1, float despawnTime = 0, Vector3 position = new Vector3())
+	public void Spawn(ItemBase item, int quantity = 1, float despawnTime = 0, Vector3 position = new Vector3())
 	{
-		GameObject newGameObject= SpawnObject(item, quantity, despawnTime, position, colliderRadius,transform);
-		if(newGameObject!=null)
-		spawnedGameobjects.Add(newGameObject);
+		GameObject newGameObject = SpawnObject(item, quantity, despawnTime, position, colliderRadius, transform);
+		if (newGameObject != null)
+			spawnedGameobjects.Add(newGameObject);
 	}
 
-	public static GameObject SpawnObject(ItemBase item, int quantity, float despawnTime, Vector3 position, float colliderRadius, Transform parent=null)
+	public static GameObject SpawnObject(ItemBase item, int quantity, float despawnTime, Vector3 position,
+		float colliderRadius, Transform parent = null)
 	{
 		if (item == null || item.meshDetailsList == null || item.meshDetailsList.Count == 0)
 		{
@@ -34,16 +35,16 @@ public class ItemSpawner : MonoBehaviour, ISaveLoad
 			return null;
 		}
 
-	 GameObject	newGameObject = new GameObject();
+		GameObject newGameObject = new GameObject();
 		SetBasicDetails(item, newGameObject);
 		SetMesh(item, newGameObject);
-		SetTransform(position, newGameObject, item,parent);
+		SetTransform(position, newGameObject, item, parent);
 		SetCollider(newGameObject, item, colliderRadius);
 		Despawner despawner = null;
 		if (despawnTime > 0)
 		{
 			despawner = newGameObject.AddComponent<Despawner>();
-			despawner.Init( despawnTime);
+			despawner.Init(despawnTime);
 		}
 
 		newGameObject.AddComponent<Pickup>().Init(item, quantity);
@@ -94,7 +95,7 @@ public class ItemSpawner : MonoBehaviour, ISaveLoad
 	{
 		foreach (var obj in spawnedGameobjects)
 		{
-			if(obj!=null) Destroy(obj);
+			if (obj != null) Destroy(obj);
 		}
 
 		spawnedGameobjects = new List<GameObject>();
@@ -102,7 +103,8 @@ public class ItemSpawner : MonoBehaviour, ISaveLoad
 		if (data == null) return;
 		foreach (var sData in savedData)
 		{
-			Spawn(ItemBase.GetItemFromID(sData.itemId),sData.quantity,sData.remainingTime,SerializableVector.GetVector(sData.position));
+			Spawn(ItemBase.GetItemFromID(sData.itemId), sData.quantity, sData.remainingTime,
+				SerializableVector.GetVector(sData.position));
 		}
 	}
 
@@ -111,9 +113,10 @@ public class ItemSpawner : MonoBehaviour, ISaveLoad
 		List<SaveData> data = new List<SaveData>();
 		foreach (var obj in spawnedGameobjects)
 		{
-			if(obj==null) continue;
+			if (obj == null) continue;
 			data.Add(new SaveData(obj));
 		}
+
 		return data;
 	}
 
@@ -124,14 +127,16 @@ public class ItemSpawner : MonoBehaviour, ISaveLoad
 		public float remainingTime;
 		public int quantity;
 		public SerializableVector position;
+
 		public SaveData(GameObject obj)
 		{
-			if (obj.TryGetComponent( out Pickup pickup))
+			if (obj.TryGetComponent(out Pickup pickup))
 			{
-				itemId = pickup.item.itemID;
+				itemId = pickup.Item.itemID;
 				quantity = pickup.quantity;
 			}
-			if (obj.TryGetComponent( out Despawner despawner))
+
+			if (obj.TryGetComponent(out Despawner despawner))
 			{
 				remainingTime = despawner.remainingTime;
 			}

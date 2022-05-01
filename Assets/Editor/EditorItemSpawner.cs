@@ -13,6 +13,7 @@ public class EditorItemSpawner : EditorWindow
 	private int quantity = 1;
 	private Vector3 gameObjectPosition = Vector3.zero;
 	private Vector3 uiRequestedPosition = Vector3.zero;
+	private string spawnObjectName = "Editor - Item Spawner Target";
 
 	private float despawnTime = 0;
 	private float colliderRadius = defaultColliderRadius;
@@ -23,6 +24,14 @@ public class EditorItemSpawner : EditorWindow
 	public static void DisplayWindow()
 	{
 		GetWindow(typeof(EditorItemSpawner));
+		PositionMarker[] pm = FindObjectsOfType<PositionMarker>();
+		if (pm.Length > 0)
+		{
+			for (int i = 0; i < pm.Length; i++)
+			{
+				DestroyImmediate(pm[i].gameObject);
+			}
+		}
 	}
 
 	void OnFocus()
@@ -35,7 +44,7 @@ public class EditorItemSpawner : EditorWindow
 		if (sceneViewTransform == null)
 		{
 			sceneViewTransform = new GameObject().transform;
-			sceneViewTransform.gameObject.name = "Editor - Item Spawner Target";
+			sceneViewTransform.gameObject.name = spawnObjectName;
 			PositionMarker positionMarker = sceneViewTransform.gameObject.AddComponent<PositionMarker>();
 			positionMarker.Init(Color.blue, "Item Spawn Point");
 		}

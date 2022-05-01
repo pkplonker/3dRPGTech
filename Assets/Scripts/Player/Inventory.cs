@@ -120,7 +120,6 @@ namespace Player
 		{
 			public ItemBase item { get; private set; }
 			public int quantity { get; private set; }
-
 			public InventorySlot(ItemBase item, int quantity)
 			{
 				this.item = item;
@@ -172,6 +171,8 @@ namespace Player
 				slots.Insert(i, new InventorySlot(ItemBase.GetItemFromID(saveDataSlots[i].itemId),
 					saveDataSlots[i].quantity));
 			}
+			OnInventoryChanged?.Invoke();
+			
 		}
 
 		public object SaveState()

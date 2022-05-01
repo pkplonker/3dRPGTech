@@ -9,7 +9,8 @@ namespace Interactables
 
     public class Pickup : Interactable
     {
-        public ItemBase item { get; private set; }
+        [SerializeField] private ItemBase item;
+        public ItemBase Item => item;
         public int quantity { get; private set; } = 1;
         protected override void Interact(Inventory inventory)
         {
