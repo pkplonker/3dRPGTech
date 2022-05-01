@@ -57,7 +57,7 @@ namespace UI
 		{
 			for (int i = 0; i < inventory.GetCapacity(); i++)
 			{
-				inventorySlots.Add(Instantiate(inventorySlotPrefab, slotContainer).GetComponent<InventorySlot>().Init(inventory));
+				inventorySlots.Add(Instantiate(inventorySlotPrefab, slotContainer).GetComponent<InventorySlot>().Init(inventory, i));
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 using Player;
+using SO.Items;
 using UnityEngine;
 
 namespace SO
@@ -8,7 +9,8 @@ namespace SO
     {
         public override bool Use(Inventory inventory)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Nom nom nom");
+            return true;
         }
     }
 }

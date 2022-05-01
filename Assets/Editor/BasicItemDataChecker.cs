@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 public class BasicItemDataChecker : EditorWindow
 {
 	[SerializeField] static List<ItemBase> failedItems = new();
-
+	private static int totalItems = 0;
 	[MenuItem("Custom/Items/ItemChecker")]
 	public static void ItemChecker()
 	{
@@ -57,8 +57,18 @@ public class BasicItemDataChecker : EditorWindow
 		}
 
 		EditorGUILayout.Separator();
+		GUILayout.Label(failedItems.Count + " failed out of "+ totalItems+".", EditorStyles.boldLabel);
 
-		GUILayout.Label("The following objects failed their basic checks:", EditorStyles.boldLabel);
+		if (failedItems.Count > 0)
+		{
+			GUILayout.Label("The following objects failed their basic checks:", EditorStyles.boldLabel);
+
+		}
+		else
+		{
+			GUILayout.Label("All checks passed", EditorStyles.boldLabel);
+
+		}
 		EditorGUILayout.Separator();
 
 		foreach (var i in objs)
@@ -80,8 +90,10 @@ public class BasicItemDataChecker : EditorWindow
 
 	private void Check()
 	{
+		Resources.LoadAll("SO", typeof(ScriptableObject));
 		ItemBase[] items = Resources.FindObjectsOfTypeAll<ItemBase>();
 		if (items == null) return;
+		totalItems = items.Length;
 		foreach (var item in items)
 		{
 			string response = ItemPassesChecks(item);
@@ -91,6 +103,7 @@ public class BasicItemDataChecker : EditorWindow
 				failedItems.Add(item);
 			}
 		}
+
 	}
 	
 	

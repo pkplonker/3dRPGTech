@@ -60,6 +60,11 @@ namespace Player
 
 		public bool Add(ItemBase item, int quantity)
 		{
+			if (item == null)
+			{
+				Debug.LogError("Cannot add null item");
+				return false;
+			}
 			foreach (var t in slots.Where(t =>
 				t.item != null && t.item == item && t.quantity + quantity <= t.item.maxQuantity))
 			{

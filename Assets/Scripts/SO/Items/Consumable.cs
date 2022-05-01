@@ -1,7 +1,6 @@
 using Player;
-using UnityEngine;
 
-namespace SO
+namespace SO.Items
 {
     
     public class Consumable : ItemBase

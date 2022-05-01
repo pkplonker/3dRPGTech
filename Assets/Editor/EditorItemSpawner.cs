@@ -1,42 +1,97 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DebugScripts;
 using SO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EditorItemSpawner : EditorWindow
 {
 	private ItemBase item = null;
 	private int quantity = 1;
-	private Vector3 gameObjectposition = Vector3.zero;
+	private Vector3 gameObjectPosition = Vector3.zero;
+	private Vector3 uiRequestedPosition = Vector3.zero;
+
 	private float despawnTime = 0;
 	private float colliderRadius = defaultColliderRadius;
 	const float defaultColliderRadius = 0.5f;
 	private bool automaticallyRespawn = true;
-
+	private Transform sceneViewTransform;
 	[MenuItem("Custom/Items/World Object Spawner")]
 	public static void DisplayWindow()
 	{
 		GetWindow(typeof(EditorItemSpawner));
 	}
 
+	void OnFocus()
+	{
+		SpawnMarker();
+	}
+
+	private void SpawnMarker()
+	{
+		if (sceneViewTransform == null)
+		{
+			sceneViewTransform = new GameObject().transform;
+			sceneViewTransform.gameObject.name = "Editor - Item Spawner Target";
+			PositionMarker positionMarker = sceneViewTransform.gameObject.AddComponent<PositionMarker>();
+			positionMarker.Init(Color.blue, "Item Spawn Point");
+		}
+	}
+
+	void OnDestroy() {
+		if (sceneViewTransform != null)
+		{
+			DestroyImmediate(sceneViewTransform.gameObject);
+		}
+	}
+
+	private void Update()
+	{
+		if (sceneViewTransform == null)
+		{
+			SpawnMarker();
+		}
+		if (sceneViewTransform.position != uiRequestedPosition && uiRequestedPosition != gameObjectPosition)
+		{
+			sceneViewTransform.position = uiRequestedPosition;
+			gameObjectPosition = uiRequestedPosition;
+		}
+
+		if (sceneViewTransform.position != gameObjectPosition)
+		{
+			uiRequestedPosition = sceneViewTransform.position;
+			gameObjectPosition = sceneViewTransform.position;
+			//gameObjectPosition = gameObjectPosition;
+		}
+	}
+
 	private void OnGUI()
 	{
+		if (sceneViewTransform != null)
+		{
+			if (GUILayout.Button("Select sceneview target"))
+			{
+				Selection.activeGameObject = sceneViewTransform.gameObject;
+			}
+		}
 		GUILayout.Label("Spawn new object", EditorStyles.boldLabel);
 		item = EditorGUILayout.ObjectField("Item", item, typeof(ItemBase), true) as ItemBase;
 		quantity = EditorGUILayout.IntField("Quantity", quantity);
 		despawnTime = EditorGUILayout.FloatField("DespawnTime", despawnTime);
-		gameObjectposition = EditorGUILayout.Vector3Field("Position", gameObjectposition);
+		//gameObjectPosition = EditorGUILayout.Vector3Field("Position", gameObjectPosition);
+
+		uiRequestedPosition = EditorGUILayout.Vector3Field("Position", uiRequestedPosition);
 		automaticallyRespawn = EditorGUILayout.Toggle("Automatically Respawn?", automaticallyRespawn);
 		colliderRadius = EditorGUILayout.FloatField("ColliderRadius", colliderRadius);
-
-		item = EditorGUILayout.ObjectField("Item", item, typeof(ItemBase), true) as ItemBase;
-
+		
 		if (GUILayout.Button("Spawn Item"))
 		{
 			SpawnObject();
 		}
+		
 	}
 
 	private void SpawnObject()
@@ -66,7 +121,7 @@ public class EditorItemSpawner : EditorWindow
 		}
 
 
-	GameObject newObj = ItemSpawner.SpawnObject(item, quantity, despawnTime, gameObjectposition, colliderRadius,Selection.transforms.Length!=0? Selection.transforms[0]:null);
+	GameObject newObj = ItemSpawner.SpawnObject(item, quantity, despawnTime, gameObjectPosition, colliderRadius,null);
 	//Selection.activeTransform = newObj.transform;
 	//SceneView.lastActiveSceneView.FrameSelected();
 

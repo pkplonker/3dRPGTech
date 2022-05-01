@@ -20,7 +20,7 @@ MonoBehaviour:
   meshDetailsList:
   - mesh: {fileID: 4300000, guid: 6aaeb8514cce88c4f997d07b8fb96ce0, type: 3}
     material: {fileID: 2100000, guid: 6aaeb8514cce88c4f997d07b8fb96ce0, type: 3}
-  failedCheckWarning: Item Material Missing
+  failedCheckWarning: Item description missing
   scaleFactor: 1
   spawnRotation: {x: 0, y: 0, z: 0, w: 1}
   equipmentSlot: 9

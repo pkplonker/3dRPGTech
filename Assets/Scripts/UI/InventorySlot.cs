@@ -14,6 +14,7 @@ namespace UI
 	    private Button button;
 	    private ItemBase item;
 	    private Inventory inventory;
+	    private int index;
 
 	    private void Start()
 	    {
@@ -22,7 +23,7 @@ namespace UI
 		    button.onClick.AddListener(ButtonClick);
 	    }
 
-	    public InventorySlot Init(Inventory inventory)
+	    public InventorySlot Init(Inventory inventory, int index)
 	    {
 		    if (inventory == null)
 		    {
@@ -30,6 +31,7 @@ namespace UI
 			    return null;
 		    }
 
+		    this.index = index;
 		    this.inventory = inventory;
 		    UpdateUI(null,-1);
 		    return this;
@@ -69,7 +71,10 @@ namespace UI
 	    private void ButtonClick()
 	    {
 		    if (item == null) return;
-		    item.Use(inventory);
+		    if (item.Use(inventory))
+		    {
+			    inventory.RemoveItemFromSlot(index, 1);
+		    }
 	    }
 
     }
