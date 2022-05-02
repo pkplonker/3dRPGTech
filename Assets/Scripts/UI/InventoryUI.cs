@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Player;
+using InventorySystem;
 using SO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,7 +64,7 @@ namespace UI
 		{
 			for (int i = 0; i < inventory.GetCapacity(); i++)
 			{
-				inventorySlots.Add(Instantiate(inventorySlotPrefab, slotContainer).GetComponent<InventorySlotUI>().Init(inventory, i));
+				inventorySlots.Add(Instantiate(inventorySlotPrefab, slotContainer).GetComponentInChildren<InventorySlotUI>().Init(inventory, i));
 			}
 		}
 	}

@@ -3,6 +3,7 @@ using Player;
 using SO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UI
@@ -13,8 +14,8 @@ namespace UI
 	    [SerializeField] private Image iconImage;
 	    private Button button;
 	    private ItemBase item;
-	    private Inventory inventory;
-	    private int index;
+	    public Inventory inventory { get; private set; }
+	    public int index { get; private set; }
 
 	    private void Start()
 	    {

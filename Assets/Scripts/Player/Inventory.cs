@@ -14,6 +14,7 @@ namespace Player
 		[SerializeField] private int capacity;
 		public event Action OnInventoryChanged;
 		public int GetCapacity() => capacity;
+
 		private void Start()
 		{
 			FillSlotCapacity();
@@ -65,6 +66,7 @@ namespace Player
 				Debug.LogError("Cannot add null item");
 				return false;
 			}
+
 			foreach (var t in slots.Where(t =>
 				t.item != null && t.item == item && t.quantity + quantity <= t.item.maxQuantity))
 			{
@@ -110,12 +112,12 @@ namespace Player
 				quantityRemaining -= t.quantity;
 				t.Remove(t.quantity);
 			}
+
 			OnInventoryChanged?.Invoke();
 			return true;
 		}
 
-		
-		
+
 		#region SaveLoad
 
 		public void LoadState(object data)
@@ -127,8 +129,8 @@ namespace Player
 				slots.Insert(i, new InventorySlot(ItemBase.GetItemFromID(saveDataSlots[i].itemId),
 					saveDataSlots[i].quantity));
 			}
+
 			OnInventoryChanged?.Invoke();
-			
 		}
 
 		public object SaveState()
@@ -157,9 +159,33 @@ namespace Player
 				}
 			}
 		}
+
 		#endregion
+
+		public void SwapSlots(int sender, int receiver)
+		{
+			if (slots[sender].item == slots[receiver].item)
+			{
+				AddItemToSlot(slots[receiver].item, slots[sender].quantity + slots[receiver].quantity, receiver);
+				RemoveItemFromSlot(sender, slots[sender].quantity);
+				return;
+			}
+			if (slots[receiver].item == null)
+			{
+				AddItemToSlot(slots[sender].item, slots[sender].quantity, receiver);
+				RemoveItemFromSlot(sender, slots[sender].quantity);
+
+			}
+			else
+			{
+				ItemBase cachedItem = slots[sender].item;
+				int cachedQuantity = slots[sender].quantity;
+				RemoveItemFromSlot(sender, cachedQuantity);
+				AddItemToSlot(slots[receiver].item, slots[receiver].quantity, sender);
+				AddItemToSlot(cachedItem, cachedQuantity, receiver);
+			}
+
+		
+		}
 	}
-
-
-
 }
