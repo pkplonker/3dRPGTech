@@ -51,4 +51,11 @@ public class InventorySlot
 			item = null;
 		}
 	}
+
+	public bool AddQuantity(int i)
+	{
+		if (quantity + i > item.maxQuantity) return false;
+		quantity += i;
+		return true;
+	}
 }

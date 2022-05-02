@@ -166,26 +166,33 @@ namespace Player
 		{
 			if (slots[sender].item == slots[receiver].item)
 			{
-				AddItemToSlot(slots[receiver].item, slots[sender].quantity + slots[receiver].quantity, receiver);
-				RemoveItemFromSlot(sender, slots[sender].quantity);
-				return;
-			}
-			if (slots[receiver].item == null)
+				if (slots[receiver].AddQuantity(slots[sender].quantity))
+				{
+					RemoveItemFromSlot(sender, slots[sender].quantity);
+				}
+				
+			}else if (slots[receiver].item == null)
 			{
 				AddItemToSlot(slots[sender].item, slots[sender].quantity, receiver);
 				RemoveItemFromSlot(sender, slots[sender].quantity);
-
 			}
 			else
 			{
+				//cache sender
 				ItemBase cachedItem = slots[sender].item;
 				int cachedQuantity = slots[sender].quantity;
+				//remove sender
 				RemoveItemFromSlot(sender, cachedQuantity);
+				//add to sender
 				AddItemToSlot(slots[receiver].item, slots[receiver].quantity, sender);
+				//add to receiver
+				RemoveItemFromSlot(receiver, slots[receiver].quantity);
+
 				AddItemToSlot(cachedItem, cachedQuantity, receiver);
 			}
 
-		
+			OnInventoryChanged?.Invoke();
+
 		}
 	}
 }
