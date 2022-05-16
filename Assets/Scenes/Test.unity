@@ -801,50 +801,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282176476}
   m_CullTransparentMesh: 1
---- !u!1 &313716368
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 313716370}
-  - component: {fileID: 313716369}
-  m_Layer: 0
-  m_Name: Editor - Item Spawner Target
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &313716369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 313716368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2967fc8f5185f8c4e82e66ffe10fb66f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &313716370
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 313716368}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.578}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &316399202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,6 +999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventorySlotPrefab: {fileID: 1253378006407387948, guid: 1c009880fa9a61349b78c548affaa31d, type: 3}
   slotContainer: {fileID: 595697897}
+  inventoryVariable: {fileID: 11400000, guid: bdb8f2e1e7052ef498aa735bf902afea, type: 2}
 --- !u!1 &403059191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1282,6 +1239,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443130678}
   m_CullTransparentMesh: 0
+--- !u!1 &443805341
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 443805343}
+  - component: {fileID: 443805342}
+  m_Layer: 0
+  m_Name: Editor - Item Spawner Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &443805342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443805341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2967fc8f5185f8c4e82e66ffe10fb66f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &443805343
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443805341}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &458933459
 GameObject:
   m_ObjectHideFlags: 0
@@ -4620,7 +4621,7 @@ Transform:
   m_Children:
   - {fileID: 1094563172}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1887347059
 GameObject:
@@ -6226,6 +6227,14 @@ PrefabInstance:
       propertyPath: capacity
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 1416262586812923852, guid: 4a75cb3d9f9bfb843b7c693484fc2e22, type: 3}
+      propertyPath: inventoryVariable
+      value: 
+      objectReference: {fileID: 11400000, guid: bdb8f2e1e7052ef498aa735bf902afea, type: 2}
+    - target: {fileID: 1416262586812923852, guid: 4a75cb3d9f9bfb843b7c693484fc2e22, type: 3}
+      propertyPath: inventoryReference
+      value: 
+      objectReference: {fileID: 11400000, guid: bdb8f2e1e7052ef498aa735bf902afea, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a75cb3d9f9bfb843b7c693484fc2e22, type: 3}

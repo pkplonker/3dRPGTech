@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using SO;
+using SO.Items;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;

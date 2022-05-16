@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using SO;
+using SO.Items;
 using UnityEditor;
 using UnityEngine;
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DebugScripts;
 using SO;
+using SO.Items;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;

@@ -1,6 +1,7 @@
 using System;
 using Player;
 using SO;
+using SO.Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;

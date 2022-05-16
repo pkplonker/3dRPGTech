@@ -31,7 +31,7 @@ namespace Player
 
         }
 
-        public void Init(PlayerManager playerManager)
+        public void Init(PlayerWorldClickController playerManager)
         {
             if(playerManager==null) Debug.LogError("Player manager cannot be null");
             inputHandler = playerManager.GetComponent<InputHandler>();

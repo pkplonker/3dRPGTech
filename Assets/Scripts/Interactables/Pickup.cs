@@ -2,6 +2,7 @@ using System;
 using Player;
 using Save;
 using SO;
+using SO.Items;
 using UnityEngine;
 
 namespace Interactables

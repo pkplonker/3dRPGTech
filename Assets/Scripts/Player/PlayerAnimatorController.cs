@@ -17,9 +17,20 @@ namespace Player
             if(locomotion ==null) Debug.LogError("locomotion missing");
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            animator.SetFloat(Movement, locomotion.currentMovementSpeed);
+            locomotion.OnSpeedChanged += CharacterSpeedChanged;
         }
+        private void OnDisable()
+        {
+            locomotion.OnSpeedChanged -= CharacterSpeedChanged;
+        }
+
+        private void CharacterSpeedChanged(float newSpeed)
+        {
+            animator.SetFloat(Movement, newSpeed);
+
+        }
+       
     }
 }

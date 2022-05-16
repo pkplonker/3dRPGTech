@@ -15,14 +15,42 @@ namespace Player
 		[SerializeField] float currentRegenRate = 1f;
 		private Locomotion locomotion;
 		private bool isRunning;
+		private InputHandler inputHandler;
+		private void Awake()
+		{
+			inputHandler = GetComponent<InputHandler>();
+			if (inputHandler == null) Debug.LogError("Input Handler not found");
+			locomotion = GetComponent<Locomotion>();
+			if (locomotion == null) Debug.LogError("missing locomotion");
+		}
 
 		private void Start()
 		{
 			currentRunEnergy = maxRunEnergy;
 			OnRunEnergyChanged?.Invoke(currentRunEnergy);
 			StartCoroutine(RunningCor());
-			locomotion = GetComponent<Locomotion>();
-			if (locomotion == null) Debug.LogError("missing locomotion");
+		
+		}
+
+		private void OnEnable()
+		{
+			locomotion.OnSpeedChanged += CharacterSpeedChanged;
+		}
+
+
+		private void OnDisable()
+		{
+			locomotion.OnSpeedChanged -= CharacterSpeedChanged;
+		}
+
+		private void Update()
+		{
+			RequestRun(inputHandler.Shift);
+		}
+
+		private void CharacterSpeedChanged(float speed)
+		{
+			if (speed <= 0.01f) SetRunning(false);
 		}
 
 		private bool HasRunEnergy()
@@ -30,8 +58,6 @@ namespace Player
 			return currentRunEnergy > 0 + Time.deltaTime;
 		}
 
-
-	
 
 		IEnumerator RunningCor()
 		{
@@ -45,12 +71,11 @@ namespace Player
 				currentRunEnergy = 0;
 			}
 
-			if (locomotion.currentMovementSpeed <= 0.01f) SetRunning(false);
 
 			StartCoroutine(RunningCor());
 		}
 
-	
+
 		private void SetRunning(bool isRunning)
 		{
 			this.isRunning = isRunning;

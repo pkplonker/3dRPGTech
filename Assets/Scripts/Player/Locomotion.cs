@@ -1,3 +1,4 @@
+using System;
 using Interactables;
 using Save;
 using UnityEngine;
@@ -15,10 +16,11 @@ namespace Player
 		[SerializeField] private float walkSpeed = 3.5f;
 		[SerializeField] private float runSpeed = 7f;
 		private Vector3 lastPosition;
-		public float currentSpeed { get; private set; }
+		private float currentTargetSpeed;
+		public event Action<float> OnSpeedChanged;
 
-		
-		public float currentMovementSpeed { get; private set; }
+		private float currentMovementSpeed;
+		private float lastMovementSpeed=0;
 
 		private void Awake()
 		{
@@ -33,7 +35,7 @@ namespace Player
 
 		private void Start()
 		{
-			currentSpeed = walkSpeed;
+			currentTargetSpeed = walkSpeed;
 			lastPosition = transform.position;
 			agent.speed = walkSpeed;
 		}
@@ -41,7 +43,7 @@ namespace Player
 		private void Update()
 		{
 			UpdateCurrentSpeed();
-			agent.speed = currentSpeed;
+			agent.speed = currentTargetSpeed;
 			if (currentTarget == null)
 			{
 				SetAutomaticRotation();
@@ -58,6 +60,12 @@ namespace Player
 		{
 			currentMovementSpeed = Mathf.Lerp(currentMovementSpeed,
 				(transform.position - lastPosition).magnitude / Time.deltaTime, 0.75f);
+			if (Mathf.Abs(lastMovementSpeed - currentMovementSpeed)>0.05)
+			{
+				OnSpeedChanged?.Invoke(currentMovementSpeed);
+			}
+
+			lastMovementSpeed = currentMovementSpeed;
 			lastPosition = transform.position;
 		}
 
@@ -104,7 +112,7 @@ namespace Player
 
 		public void SetRun(bool isRunning)
 		{
-			currentSpeed = isRunning ? runSpeed : walkSpeed;
+			currentTargetSpeed = isRunning ? runSpeed : walkSpeed;
 			
 		}
 

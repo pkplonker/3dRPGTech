@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Player;
-using InventorySystem;
 using SO;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
@@ -15,10 +13,16 @@ namespace UI
 		private List<InventorySlotUI> inventorySlots = new();
 
 		private Inventory inventory;
+		[SerializeField] InventoryVariable inventoryVariable;
 
 		private void Awake()
 		{
-			inventory= PlayerManager.Instance.GetComponent<Inventory>();
+			inventory= inventoryVariable.value;
+
+		}
+
+		private void Start()
+		{
 			if (inventory == null)
 			{
 				Debug.LogWarning("Missing inventory");
@@ -32,10 +36,7 @@ namespace UI
 			inventory.OnInventoryChanged += UpdateUI;
 		}
 
-		private void Start()
-		{
-			
-		}
+	
 
 		private void OnDisable()
 		{

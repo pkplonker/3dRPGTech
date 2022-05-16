@@ -4,6 +4,7 @@ using System.Linq;
 using InventorySystem;
 using Save;
 using SO;
+using SO.Items;
 using UnityEngine;
 
 namespace Player
@@ -15,6 +16,12 @@ namespace Player
 		[SerializeField] private int capacity;
 		public event Action OnInventoryChanged;
 		public int GetCapacity() => capacity;
+		[SerializeField] private InventoryVariable inventoryVariable;
+
+		private void Awake()
+		{
+			inventoryVariable.value = this;
+		}
 
 		private void Start()
 		{

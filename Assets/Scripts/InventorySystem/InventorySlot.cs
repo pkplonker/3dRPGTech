@@ -1,5 +1,6 @@
 using System;
 using SO;
+using SO.Items;
 using UnityEngine;
 
 namespace InventorySystem

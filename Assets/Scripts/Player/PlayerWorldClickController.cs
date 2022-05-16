@@ -5,19 +5,15 @@ using UnityEngine.EventSystems;
 
 namespace Player
 {
-	public class PlayerManager : MonoBehaviour
+	public class PlayerWorldClickController : MonoBehaviour
 	{
 		private InputHandler inputHandler;
 		private Camera playerCamera;
 		[SerializeField] private LayerMask movementMask;
 		private Locomotion locomotion;
-		public static PlayerManager Instance { get; private set; }
 		private Interactable currentFocus;
-		private RunManager runManager;
 		private void Awake()
 		{
-			if (Instance == null) Instance = this;
-			else Destroy(gameObject);
 			inputHandler = GetComponent<InputHandler>();
 			if (inputHandler == null) Debug.LogError("Input Handler not found");
 			locomotion = GetComponent<Locomotion>();
@@ -25,8 +21,7 @@ namespace Player
 			playerCamera = CameraHandler.instance.playerCamera;
 			CameraHandler.instance.Init(this);
 			if (playerCamera == null) Debug.LogError("Camera not found");
-			runManager = GetComponent<RunManager>();
-			if (runManager == null) Debug.LogError("Runmanger not found");
+			
 		}
 
 		private void Update()
@@ -43,7 +38,6 @@ namespace Player
 
 			Defocus();
 			locomotion.Move(hit.point);
-			runManager.RequestRun(inputHandler.Shift);
 		}
 
 		private void SetFocus(Interactable interactable)

@@ -1,7 +1,7 @@
 using Player;
 using UnityEngine;
 
-namespace SO
+namespace SO.Items
 {
     [CreateAssetMenu(fileName = "New Equipment", menuName = "SO/Items/Equipment/Equipment")]
     public class Equipment : ItemBase

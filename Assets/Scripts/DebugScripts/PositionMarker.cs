@@ -17,6 +17,7 @@ namespace DebugScripts
         }
         private void OnDrawGizmos()
         {
+            if (markerTransform == null) return;
             Gizmos.color = color;
             Handles.color = color;
             Handles.DrawSolidDisc(transform.position,Vector3.up, .25f);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Player;
 using UnityEngine;
 
-namespace SO
+namespace SO.Items
 {
 	public abstract class ItemBase : ScriptableObject, ISerializationCallbackReceiver
 	{
