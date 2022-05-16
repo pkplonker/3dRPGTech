@@ -14,7 +14,7 @@ namespace Player
 		[SerializeField] float currentDrainRate = 1f;
 		[SerializeField] float currentRegenRate = 1f;
 		private Locomotion locomotion;
-		public bool isRunning { get; private set; }
+		private bool isRunning;
 
 		private void Start()
 		{
@@ -25,16 +25,13 @@ namespace Player
 			if (locomotion == null) Debug.LogError("missing locomotion");
 		}
 
-		public bool HasRunEnergy()
+		private bool HasRunEnergy()
 		{
 			return currentRunEnergy > 0 + Time.deltaTime;
 		}
 
 
-		public void StartRunning()
-		{
-			isRunning = true;
-		}
+	
 
 		IEnumerator RunningCor()
 		{
@@ -48,14 +45,16 @@ namespace Player
 				currentRunEnergy = 0;
 			}
 
-			if (locomotion.currentMovementSpeed <= 0.01f) StopRunning();
+			if (locomotion.currentMovementSpeed <= 0.01f) SetRunning(false);
 
 			StartCoroutine(RunningCor());
 		}
 
-		public void StopRunning()
+	
+		private void SetRunning(bool isRunning)
 		{
-			isRunning = false;
+			this.isRunning = isRunning;
+			locomotion.SetRun(isRunning);
 		}
 
 		public void RecoverRun(float amount)
@@ -69,6 +68,12 @@ namespace Player
 			OnRunEnergyChanged?.Invoke(currentRunEnergy);
 		}
 
+		public void RequestRun(bool isRequested)
+		{
+			if (HasRunEnergy() && isRequested) SetRunning(true);
+			else SetRunning(false);
+		}
+
 		public object SaveState()
 		{
 			return new SaveData()
@@ -77,7 +82,8 @@ namespace Player
 				maxRunEnergy = maxRunEnergy
 			};
 		}
-[Serializable]
+
+		[Serializable]
 		private struct SaveData
 		{
 			public float currentRunEnergy;

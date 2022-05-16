@@ -1,74 +1,73 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Player;
 using SO;
 using UnityEngine;
 
-public class CameraHandler : MonoBehaviour
+namespace Player
 {
-    public static CameraHandler instance;
-    [HideInInspector] public Camera playerCamera { get; private set; }
-    private InputHandler inputHandler;
+    public class CameraHandler : MonoBehaviour
+    {
+        public static CameraHandler instance;
+        [HideInInspector] public Camera playerCamera { get; private set; }
+        private InputHandler inputHandler;
 
-    [Header("General")]
-    [SerializeField] private Transform target;
-    [SerializeField] private float pitch;
-    [SerializeField] private PlayerCustomSettings playerCustomSettings;    
-    [Header("Zoom")]
-    [SerializeField] private Vector3 cameraOffset;
-    [SerializeField] private float cameraZoomMin;
-    [SerializeField] private float cameraZoomMax;
-    private float currentZoomLevel;
-    private float currentYaw;
-    private Vector3 currentTargetPosition;
+        [Header("General")]
+        [SerializeField] private Transform target;
+        [SerializeField] private float pitch;
+        [SerializeField] private PlayerCustomSettings playerCustomSettings;    
+        [Header("Zoom")]
+        [SerializeField] private Vector3 cameraOffset;
+        [SerializeField] private float cameraZoomMin;
+        [SerializeField] private float cameraZoomMax;
+        private float currentZoomLevel;
+        private float currentYaw;
+        private Vector3 currentTargetPosition;
     
-    private void Awake()
-    {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
-        playerCamera = GetComponentInChildren<Camera>();
-        if(!playerCamera) Debug.LogWarning("No camera");
-        currentZoomLevel = cameraZoomMax - cameraZoomMin / 2;
-
-    }
-
-    public void Init(PlayerManager playerManager)
-    {
-        if(playerManager==null) Debug.LogError("Player manager cannot be null");
-        inputHandler = playerManager.GetComponent<InputHandler>();
-        if(!inputHandler) Debug.LogWarning("No input handler");
-    }
-
-    private void Update()
-    {
-        ChangeScroll(inputHandler.MouseScrollVector);
-        HandleCameraPan();
-    }
-
-    private void HandleCameraPan()
-    {
-        if (inputHandler.MiddleClick)
+        private void Awake()
         {
-            currentYaw += inputHandler.CameraMove * playerCustomSettings.cameraRotationSpeed * Time.deltaTime;
-        }
-    }
+            if (instance == null) instance = this;
+            else Destroy(gameObject);
+            playerCamera = GetComponentInChildren<Camera>();
+            if(!playerCamera) Debug.LogWarning("No camera");
+            currentZoomLevel = cameraZoomMax - cameraZoomMin / 2;
 
-    private void ChangeScroll(float value)
-    {
-        if (value > 0) currentZoomLevel -= playerCustomSettings.cameraZoomSpeed;
-        else if (value<0)currentZoomLevel+=playerCustomSettings.cameraZoomSpeed;
-        if (currentZoomLevel > cameraZoomMax) currentZoomLevel = cameraZoomMax;
-        if (currentZoomLevel < cameraZoomMin) currentZoomLevel = cameraZoomMin;
-    }
+        }
+
+        public void Init(PlayerManager playerManager)
+        {
+            if(playerManager==null) Debug.LogError("Player manager cannot be null");
+            inputHandler = playerManager.GetComponent<InputHandler>();
+            if(!inputHandler) Debug.LogWarning("No input handler");
+        }
+
+        private void Update()
+        {
+            ChangeScroll(inputHandler.MouseScrollVector);
+            HandleCameraPan();
+        }
+
+        private void HandleCameraPan()
+        {
+            if (inputHandler.MiddleClick)
+            {
+                currentYaw += inputHandler.CameraMove * playerCustomSettings.cameraRotationSpeed * Time.deltaTime;
+            }
+        }
+
+        private void ChangeScroll(float value)
+        {
+            if (value > 0) currentZoomLevel -= playerCustomSettings.cameraZoomSpeed;
+            else if (value<0)currentZoomLevel+=playerCustomSettings.cameraZoomSpeed;
+            if (currentZoomLevel > cameraZoomMax) currentZoomLevel = cameraZoomMax;
+            if (currentZoomLevel < cameraZoomMin) currentZoomLevel = cameraZoomMin;
+        }
 
     
-    private void LateUpdate()
-    {
-        currentTargetPosition = target.position;
-        transform.position = currentTargetPosition - cameraOffset * currentZoomLevel ;
-        transform.LookAt(currentTargetPosition+ Vector3.up*pitch);
-        transform.RotateAround(currentTargetPosition, Vector3.up, currentYaw);
+        private void LateUpdate()
+        {
+            currentTargetPosition = target.position;
+            transform.position = currentTargetPosition - cameraOffset * currentZoomLevel ;
+            transform.LookAt(currentTargetPosition+ Vector3.up*pitch);
+            transform.RotateAround(currentTargetPosition, Vector3.up, currentYaw);
 
+        }
     }
 }

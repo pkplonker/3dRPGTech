@@ -1,7 +1,5 @@
-using System;
 using Interactables;
 using Save;
-using SO;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,28 +10,30 @@ namespace Player
 		private CharacterStats stats;
 		public Transform currentTarget;
 		private NavMeshAgent agent;
+		//private RunManager runManager;
 		[SerializeField] private float rotationSpeed = 8f;
-		private Vector3 lastPosition;
 		[SerializeField] private float walkSpeed = 3.5f;
 		[SerializeField] private float runSpeed = 7f;
-		private RunManager runManager;
+		private Vector3 lastPosition;
+		public float currentSpeed { get; private set; }
+
+		
 		public float currentMovementSpeed { get; private set; }
-		private bool isRunning;
 
 		private void Awake()
 		{
 			stats = GetComponent<CharacterStats>();
-			if (stats == null) Debug.LogError("Camera not found");
+			if (stats == null) Debug.LogError("Stats not found");
 			agent = GetComponent<NavMeshAgent>();
 			if (agent == null) Debug.LogError("Nav mesh agent not found");
-			runManager = GetComponent<RunManager>();
-			if (runManager == null) Debug.LogError("runManager not found");
+			//runManager = GetComponent<RunManager>();
+			//if (runManager == null) Debug.LogError("runManager not found");
 
 		}
 
 		private void Start()
 		{
-			
+			currentSpeed = walkSpeed;
 			lastPosition = transform.position;
 			agent.speed = walkSpeed;
 		}
@@ -41,7 +41,7 @@ namespace Player
 		private void Update()
 		{
 			UpdateCurrentSpeed();
-			HandleRun();
+			agent.speed = currentSpeed;
 			if (currentTarget == null)
 			{
 				SetAutomaticRotation();
@@ -52,10 +52,7 @@ namespace Player
 			RotateTowardsTarget();
 		}
 
-		private void HandleRun()
-		{
-			agent.speed = runManager.isRunning ? runSpeed : walkSpeed;
-		}
+		
 
 		private void UpdateCurrentSpeed()
 		{
@@ -105,10 +102,10 @@ namespace Player
 			agent.stoppingDistance = target.GetInteractionRadius() * 0.8f;
 		}
 
-		public void SetRun(bool run)
+		public void SetRun(bool isRunning)
 		{
-			if (runManager.HasRunEnergy() && run) runManager.StartRunning();
-			else runManager.StopRunning();
+			currentSpeed = isRunning ? runSpeed : walkSpeed;
+			
 		}
 
 		#region SaveLoad

@@ -1,59 +1,58 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Player;
 using Save;
 using UnityEngine;
 
-public class DebugPanel : MonoBehaviour
+namespace DebugScripts
 {
-	[SerializeField] private GameObject panel;
-
-	private void Start()
+	public class DebugPanel : MonoBehaviour
 	{
-		SetPanelInactive();
-	}
+		[SerializeField] private GameObject panel;
 
-	private void SetPanelInactive()
-	{
-		panel.SetActive(false);
-	}
-
-	private void Update()
-	{
-		if (!Input.GetKeyDown(KeyCode.Escape)) return;
-		if (panel.activeSelf)
+		private void Start()
 		{
 			SetPanelInactive();
 		}
-		else
+
+		private void SetPanelInactive()
 		{
-			SetPanelActive();
+			panel.SetActive(false);
 		}
-	}
 
-	private void SetPanelActive()
-	{
-		panel.SetActive(true);
-	}
+		private void Update()
+		{
+			if (!Input.GetKeyDown(KeyCode.Escape)) return;
+			if (panel.activeSelf)
+			{
+				SetPanelInactive();
+			}
+			else
+			{
+				SetPanelActive();
+			}
+		}
 
-	public void SaveGame()
-	{
-		SavingSystem.instance.SaveGame();
-	}
+		private void SetPanelActive()
+		{
+			panel.SetActive(true);
+		}
 
-	public void NewGame()
-	{
-		SavingSystem.instance.ClearSave();
-	}
+		public void SaveGame()
+		{
+			SavingSystem.instance.SaveGame();
+		}
 
-	public void LoadGame()
-	{
-		SavingSystem.instance.LoadGame();
-	}
+		public void NewGame()
+		{
+			SavingSystem.instance.ClearSave();
+		}
 
-	public void ClosePanel()
-	{
-		SetPanelInactive();
+		public void LoadGame()
+		{
+			SavingSystem.instance.LoadGame();
+		}
+
+		public void ClosePanel()
+		{
+			SetPanelInactive();
+		}
 	}
 }

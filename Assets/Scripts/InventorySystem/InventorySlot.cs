@@ -1,61 +1,61 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using SO;
 using UnityEngine;
 
-
-[Serializable]
-public class InventorySlot
+namespace InventorySystem
 {
-	public ItemBase item { get; private set; }
-	public int quantity { get; private set; }
-
-	public InventorySlot(ItemBase item, int quantity)
+	[Serializable]
+	public class InventorySlot
 	{
-		this.item = item;
-		this.quantity = quantity;
-	}
+		public ItemBase item { get; private set; }
+		public int quantity { get; private set; }
 
-	public InventorySlot(InventorySlot slot)
-	{
-		item = slot.item;
-		quantity = slot.quantity;
-	}
-
-
-	public void Add(ItemBase item, int quantity)
-	{
-		if (item != this.item)
+		public InventorySlot(ItemBase item, int quantity)
 		{
+			this.item = item;
 			this.quantity = quantity;
 		}
-		else
+
+		public InventorySlot(InventorySlot slot)
 		{
-			this.quantity += quantity;
+			item = slot.item;
+			quantity = slot.quantity;
 		}
 
-		this.item = item;
-	}
 
-	public void Remove(int quantity)
-	{
-		quantity -= quantity;
-		if (quantity < 0)
+		public void Add(ItemBase item, int quantity)
 		{
-			Debug.LogWarning("Some how managed to remove too many");
-			item = null;
-		}
-		else if (quantity == 0)
-		{
-			item = null;
-		}
-	}
+			if (item != this.item)
+			{
+				this.quantity = quantity;
+			}
+			else
+			{
+				this.quantity += quantity;
+			}
 
-	public bool AddQuantity(int i)
-	{
-		if (quantity + i > item.maxQuantity) return false;
-		quantity += i;
-		return true;
+			this.item = item;
+		}
+
+		public void Remove(int quantity)
+		{
+			quantity -= quantity;
+			if (quantity < 0)
+			{
+				Debug.LogWarning("Some how managed to remove too many");
+				item = null;
+			}
+			else if (quantity == 0)
+			{
+				item = null;
+			}
+		}
+
+		public bool AddQuantity(int i)
+		{
+			if (quantity + i > item.maxQuantity) return false;
+			quantity += i;
+			return true;
+		}
 	}
 }

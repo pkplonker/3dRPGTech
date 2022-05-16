@@ -13,7 +13,7 @@ namespace Player
 		private Locomotion locomotion;
 		public static PlayerManager Instance { get; private set; }
 		private Interactable currentFocus;
-
+		private RunManager runManager;
 		private void Awake()
 		{
 			if (Instance == null) Instance = this;
@@ -25,6 +25,8 @@ namespace Player
 			playerCamera = CameraHandler.instance.playerCamera;
 			CameraHandler.instance.Init(this);
 			if (playerCamera == null) Debug.LogError("Camera not found");
+			runManager = GetComponent<RunManager>();
+			if (runManager == null) Debug.LogError("Runmanger not found");
 		}
 
 		private void Update()
@@ -41,7 +43,7 @@ namespace Player
 
 			Defocus();
 			locomotion.Move(hit.point);
-			locomotion.SetRun(inputHandler.Shift);
+			runManager.RequestRun(inputHandler.Shift);
 		}
 
 		private void SetFocus(Interactable interactable)
