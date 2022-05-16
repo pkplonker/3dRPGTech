@@ -21,8 +21,7 @@ namespace UI
 	    private void Start()
 	    {
 		    button = GetComponent<Button>();
-		    if(button==null) Debug.LogWarning("Button Missing");
-		    button.onClick.AddListener(ButtonClick);
+	
 	    }
 
 	    public InventorySlotUI Init(Inventory inventory, int index)
@@ -73,10 +72,8 @@ namespace UI
 	    private void ButtonClick()
 	    {
 		    if (item == null) return;
-		    if (item.Use(inventory))
-		    {
-			    inventory.RemoveItemFromSlot(index, 1);
-		    }
+		    item.Use(inventory);
+
 	    }
 
     }
